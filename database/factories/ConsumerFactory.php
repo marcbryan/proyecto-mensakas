@@ -2,21 +2,20 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Business;
+use App\Consumer;
 use Faker\Generator as Faker;
 use Faker\Factory as FakerFactory;
 
-$factory->define(Business::class, function (Faker $faker) {
+$factory->define(Consumer::class, function (Faker $faker) {
     $faker = FakerFactory::create('es_ES');
     $start_num = $faker->randomElement($array = array (9, 6));
     return [
-        'name' => $faker->company,
-        'address' => $faker->address,
-        'lat' => $faker->latitude($min = -90, $max = 90),
-        'lon' => $faker->longitude($min = -180, $max = 180),
-        'phone' => $faker->numerify($start_num.'########'),
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
         'email' => $faker->email,
+        'address' => $faker->address,
         'zipcode' => $faker->numerify('#####'),
+        'phone' => $faker->numerify($start_num.'########'),
         'created_at' => now(),
         'updated_at' => now()
     ];
