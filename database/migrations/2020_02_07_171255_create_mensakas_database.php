@@ -260,7 +260,7 @@ class CreateMensakasDatabase extends Migration
         // 22. Items
         Schema::create('items', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->unsignedBigInteger('key_id');key_id
+          $table->unsignedBigInteger('key_id');
           $table->tinyInteger('status')->default(1);
           $table->decimal('price', 5, 2);
           $table->char('type', 3);
