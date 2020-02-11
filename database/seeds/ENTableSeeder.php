@@ -12,6 +12,7 @@ class ENTableSeeder extends Seeder
     public function run()
     {
         $keys = collect([
+          // Menus
           ['text' => 'Menu of the day'],
           ['text' => 'Children\'s menu'],
           ['text' => 'Family Combined'],
@@ -23,6 +24,7 @@ class ENTableSeeder extends Seeder
           ['text' => 'Burger The Kaiser Menu'],
           ['text' => 'Sweet Goat Menu'],
 
+          // Categories
           ['text' => 'Starters'],
           ['text' => 'First courses'],
           ['text' => 'Second dishes'],
@@ -34,6 +36,7 @@ class ENTableSeeder extends Seeder
           ['text' => 'Fish and seafood'],
           ['text' => 'Meats'],
 
+          // Items
           ['text' => 'Potato chips'],
           ['text' => 'Pizza margarita'],
           ['text' => 'Hamburger'],
@@ -44,6 +47,18 @@ class ENTableSeeder extends Seeder
           ['text' => 'Beer'],
           ['text' => 'Coffee'],
           ['text' => 'Ice cream'],
+
+          // TODO: Descriptions
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => ''],
+          ['text' => '']
         ])->mapWithKeys(function ($key) {
           static $key_id = 1;
           return factory(App\EN::class)->create([

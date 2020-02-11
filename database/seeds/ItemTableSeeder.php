@@ -13,7 +13,8 @@ class ItemTableSeeder extends Seeder
     {
         for ($i=21; $i <= 30; $i++) {
           factory(App\Item::class)->create([
-            'key_id' => $i
+            'key_id' => $i,
+            'description_key' => $i+10
           ]);
         }
     }

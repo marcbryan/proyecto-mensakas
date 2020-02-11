@@ -12,10 +12,11 @@ class CATTableSeeder extends Seeder
      public function run()
      {
          $keys = collect([
+           // Menus
            ['text' => 'Menú del dia'],
            ['text' => 'Menú infantil'],
            ['text' => 'Combinat Familiar'],
-           ['text' => '1/2 pollastre a l\' + 2 begudes regulars'],
+           ['text' => '1/2 pollastre a l\'ast + 2 begudes regulars'],
            ['text' => 'Menú Frankfurt Gran'],
            ['text' => 'Pack Frankfurt per a 2 persones'],
            ['text' => 'Menú Burger Ibèrica'],
@@ -23,6 +24,7 @@ class CATTableSeeder extends Seeder
            ['text' => 'Menú Burger The Kaiser'],
            ['text' => 'Menú Sweet Cabra'],
 
+           // Categories
            ['text' => 'Entrants'],
            ['text' => 'Primers plats'],
            ['text' => 'Segons plats'],
@@ -34,6 +36,7 @@ class CATTableSeeder extends Seeder
            ['text' => 'Peix i marisc'],
            ['text' => 'Carns'],
 
+           // Items
            ['text' => 'Patates fregides'],
            ['text' => 'Pizza margarida'],
            ['text' => 'Hamburguesa'],
@@ -44,6 +47,18 @@ class CATTableSeeder extends Seeder
            ['text' => 'Cervesa'],
            ['text' => 'Cafè'],
            ['text' => 'Gelat'],
+
+           // TODO: Descriptions
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => ''],
+           ['text' => '']
          ])->mapWithKeys(function ($key) {
            static $key_id = 1;
            return factory(App\CAT::class)->create([

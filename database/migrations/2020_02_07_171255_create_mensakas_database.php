@@ -264,7 +264,7 @@ class CreateMensakasDatabase extends Migration
           $table->tinyInteger('status')->default(1);
           $table->decimal('price', 5, 2);
           $table->char('type', 3);
-          $table->unsignedBigInteger('description_key');
+          $table->unsignedBigInteger('description_key')->nullable();
           $table->tinyInteger('has_extras')->default(0);
           $table->string('image_url')->nullable();
 

@@ -42,6 +42,16 @@ class KeyTableSeeder extends Seeder
           ['name' => 'ITEM8_NAME'],
           ['name' => 'ITEM9_NAME'],
           ['name' => 'ITEM10_NAME'],
+          ['name' => 'DESCRIPTION1_NAME'],
+          ['name' => 'DESCRIPTION2_NAME'],
+          ['name' => 'DESCRIPTION3_NAME'],
+          ['name' => 'DESCRIPTION4_NAME'],
+          ['name' => 'DESCRIPTION5_NAME'],
+          ['name' => 'DESCRIPTION6_NAME'],
+          ['name' => 'DESCRIPTION7_NAME'],
+          ['name' => 'DESCRIPTION8_NAME'],
+          ['name' => 'DESCRIPTION9_NAME'],
+          ['name' => 'DESCRIPTION10_NAME'],
         ])->mapWithKeys(function ($key) {
           return factory(App\Key::class)->create([
               'key_name' => $key['name']
