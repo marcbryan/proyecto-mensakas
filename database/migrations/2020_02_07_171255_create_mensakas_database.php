@@ -111,6 +111,9 @@ class CreateMensakasDatabase extends Migration
           $table->decimal('lon', 11, 8);
           $table->string('provider', 4);
           $table->decimal('precision', 6, 3);
+          $table->unsignedBigInteger('deliverer_id');
+
+          $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
         // 10. Business
@@ -178,11 +181,13 @@ class CreateMensakasDatabase extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('business_id');
             $table->tinyInteger('status')->default(1);
             $table->json('json');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('consumers');
+            $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
         });
 
         // 16. Order Historical
@@ -255,15 +260,16 @@ class CreateMensakasDatabase extends Migration
         // 22. Items
         Schema::create('items', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->unsignedBigInteger('key_id');
+          $table->unsignedBigInteger('key_id');key_id
           $table->tinyInteger('status')->default(1);
           $table->decimal('price', 5, 2);
           $table->char('type', 3);
-          $table->string('description', 250);
+          $table->unsignedBigInteger('description_key');
           $table->tinyInteger('has_extras')->default(0);
           $table->string('image_url')->nullable();
 
           $table->foreign('key_id')->references('id')->on('keys');
+          $table->foreign('description_key')->references('id')->on('keys');
         });
 
         // 23. Extras
@@ -282,20 +288,24 @@ class CreateMensakasDatabase extends Migration
         Schema::create('item_extras', function (Blueprint $table) {
           $table->unsignedBigInteger('item_id');
           $table->unsignedBigInteger('extra_id');
+          $table->unsignedBigInteger('business_id');
 
           $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
           $table->foreign('extra_id')->references('id')->on('extras')->onDelete('cascade');
+          $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
         });
 
         // 25. Menus
         Schema::create('menus', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedBigInteger('key_id');
+          $table->unsignedBigInteger('business_id');
           $table->decimal('price', 5,2);
           $table->tinyInteger('status')->default(1);
           $table->integer('sort');
 
           $table->foreign('key_id')->references('id')->on('keys');
+          $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
         });
 
         // 26. Menu Items
