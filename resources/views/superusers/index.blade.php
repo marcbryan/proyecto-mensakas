@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('styles')
 .row i{font-size:5vw; padding:3px}
+.container{max-width:inherit;}
 @endsection
 @section('content')
     <div class="row">
