@@ -1,10 +1,10 @@
-@extends('layouts.logged', ['model'=>'superusers'])
+@extends('layouts.logged', ['model'=>'deliverers'])
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;}
 @endsection
 @section('content')
-<form action="{{route('superusers.store')}}" method="post" class="mt-2">
+<form action="{{route('deliverers.store')}}" method="post" class="mt-2">
   @csrf
   @method('PUT')
 

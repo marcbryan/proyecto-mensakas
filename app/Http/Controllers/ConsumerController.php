@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use App\Superuser;
+use App\Consumer;
 
-class SuperuserController extends Controller
+class ConsumerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class SuperuserController extends Controller
      */
     public function index()
     {
-        $superusers = Superuser::all();
-        $columns = Schema::getColumnListing('superusers');
-        return view('superusers.index', ['superusers'=>$superusers, 'columns'=>$columns]);
+        $consumers = Consumer::all();
+        $columns = Schema::getColumnListing('consumers');
+        return view('consumers.index', ['consumers'=>$consumers, 'columns'=>$columns]);
     }
 
     /**
@@ -27,8 +27,8 @@ class SuperuserController extends Controller
      */
     public function create()
     {
-        $columns = Schema::getColumnListing('superusers');
-        return view('superusers.create', ['columns'=>$columns]);
+        $columns = Schema::getColumnListing('consumers');
+        return view('consumers.create', ['columns'=>$columns]);
     }
 
     /**
@@ -43,18 +43,19 @@ class SuperuserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required',
-            'password' => 'required',
+            'address' => 'required',
+            'zipcode' => 'required',
+            'phone' => 'required'
         ]);
-        $superuser = $request->all();
-        $superuser->password = hash('sha256', $request->password);
-        $superuser->created_at = now();
-        $superuser->updated_at = now();
+        $consumer = $request->all();
+        $consumer->created_at = now();
+        $consumer->updated_at = now();
 
-        Superuser::create($superuser);
+        Consumer::create($consumer);
 
         // TODO: Cambiar texto hardcodeado
-        return redirect()->route('superusers.index')
-                        ->with('success', 'Superusuario creado correctamente.');
+        return redirect()->route('consumers.index')
+                        ->with('success', 'Consumer creado correctamente.');
     }
 
     /**
@@ -65,7 +66,7 @@ class SuperuserController extends Controller
      */
     public function show($id)
     {
-        $columns = Schema::getColumnListing('superusers');
+        $columns = Schema::getColumnListing('consumers');
     }
 
     /**
@@ -76,8 +77,8 @@ class SuperuserController extends Controller
      */
     public function edit($id)
     {
-        $columns = Schema::getColumnListing('superusers');
-        return view('superusers.edit', ['superuser' => Superuser::findOrFail($id), 'columns' => $columns]);
+        $columns = Schema::getColumnListing('consumers');
+        return view('consumers.edit', ['consumer' => Consumer::findOrFail($id), 'columns' => $columns]);
     }
 
     /**
@@ -93,20 +94,15 @@ class SuperuserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required',
+            'address' => 'required',
+            'zipcode' => 'required',
+            'phone' => 'required'
         ]);
-        $superuser = Superuser::findOrFail($id);
+        $consumer = Consumer::findOrFail($id);
 
-        $oldPass = hash('sha256', $request->old_pass);
-        if ($oldPass == $superuser->password) {
-          $request->merge([
-            'password' => hash('sha256', $request->password)
-          ]);
-          $superuser->update($request->except(['old_pass']));
-        } else {
-          $superuser->update($request->except(['password', 'old_pass']));
-        }
-        $superuser->touch();
-        return redirect('/superusers/'.$id.'/edit')->with('status', 'Superusuario actualizado correctamente!');
+        $consumer->update($request->all());
+        $consumer->touch();
+        return redirect('/consumers/'.$id.'/edit')->with('status', 'Consumer actualizado correctamente!');
     }
 
     /**
@@ -117,9 +113,9 @@ class SuperuserController extends Controller
      */
     public function destroy($id)
     {
-        $superuser = Superuser::findOrFail($id);
-        $superuser->delete();
-        return redirect()->route('superusers.index')
-                        ->with('status','Superusuario eliminado correctamente!');
+        $consumer = Consumer::findOrFail($id);
+        $consumer->delete();
+        return redirect()->route('consumers.index')
+                        ->with('status','Consumer eliminado correctamente!');
     }
 }

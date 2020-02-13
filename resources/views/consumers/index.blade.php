@@ -25,7 +25,7 @@
     <div class="row mt-2 mb-2">
         <div class="col-lg-12 margin-tb">
             <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('superusers.create') }}"> Nuevo Superusuario</a>
+                <a class="btn btn-success" href="{{ route('consumers.create') }}"> Nuevo Consumer</a>
             </div>
         </div>
     </div>
@@ -38,10 +38,10 @@
           @endforeach
         </tr>
 
-        @foreach ($superusers as $superuser)
-        <tr class='clickable-row' data-href="{{ route('superusers.edit',$superuser->id) }}">
+        @foreach ($consumers as $consumer)
+        <tr class='clickable-row' data-href="{{ route('consumers.edit',$consumer->id) }}">
           @foreach ($columns as $column)
-          <td>{{ $superuser->$column }}</td>
+          <td>{{ $consumer->$column }}</td>
           @endforeach
         </tr>
         @endforeach

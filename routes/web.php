@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
 
 Route::resource('superusers', 'SuperuserController');
+Route::resource('deliverers', 'DelivererController');
+Route::resource('consumers', 'ConsumerController');

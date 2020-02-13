@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use App\Superuser;
+use App\Deliverer;
 
-class SuperuserController extends Controller
+class DelivererController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class SuperuserController extends Controller
      */
     public function index()
     {
-        $superusers = Superuser::all();
-        $columns = Schema::getColumnListing('superusers');
-        return view('superusers.index', ['superusers'=>$superusers, 'columns'=>$columns]);
+        $deliverers = Deliverer::all();
+        $columns = Schema::getColumnListing('deliverers');
+        return view('deliverers.index', ['deliverers'=>$deliverers, 'columns'=>$columns]);
     }
 
     /**
@@ -27,8 +27,8 @@ class SuperuserController extends Controller
      */
     public function create()
     {
-        $columns = Schema::getColumnListing('superusers');
-        return view('superusers.create', ['columns'=>$columns]);
+        $columns = Schema::getColumnListing('deliverers');
+        return view('deliverers.create', ['columns'=>$columns]);
     }
 
     /**
@@ -45,16 +45,16 @@ class SuperuserController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-        $superuser = $request->all();
-        $superuser->password = hash('sha256', $request->password);
-        $superuser->created_at = now();
-        $superuser->updated_at = now();
+        $deliverer = $request->all();
+        $deliverer->password = hash('sha256', $request->password);
+        $deliverer->created_at = now();
+        $deliverer->updated_at = now();
 
-        Superuser::create($superuser);
+        Deliverer::create($deliverer);
 
         // TODO: Cambiar texto hardcodeado
-        return redirect()->route('superusers.index')
-                        ->with('success', 'Superusuario creado correctamente.');
+        return redirect()->route('deliverers.index')
+                        ->with('success', 'Deliverer creado correctamente.');
     }
 
     /**
@@ -65,7 +65,7 @@ class SuperuserController extends Controller
      */
     public function show($id)
     {
-        $columns = Schema::getColumnListing('superusers');
+        $columns = Schema::getColumnListing('deliverers');
     }
 
     /**
@@ -76,8 +76,8 @@ class SuperuserController extends Controller
      */
     public function edit($id)
     {
-        $columns = Schema::getColumnListing('superusers');
-        return view('superusers.edit', ['superuser' => Superuser::findOrFail($id), 'columns' => $columns]);
+        $columns = Schema::getColumnListing('deliverers');
+        return view('deliverers.edit', ['deliverer' => Deliverer::findOrFail($id), 'columns' => $columns]);
     }
 
     /**
@@ -94,19 +94,19 @@ class SuperuserController extends Controller
             'last_name' => 'required',
             'email' => 'required',
         ]);
-        $superuser = Superuser::findOrFail($id);
+        $deliverer = Deliverer::findOrFail($id);
 
         $oldPass = hash('sha256', $request->old_pass);
-        if ($oldPass == $superuser->password) {
+        if ($oldPass == $deliverer->password) {
           $request->merge([
             'password' => hash('sha256', $request->password)
           ]);
-          $superuser->update($request->except(['old_pass']));
+          $deliverer->update($request->except(['old_pass']));
         } else {
-          $superuser->update($request->except(['password', 'old_pass']));
+          $deliverer->update($request->except(['password', 'old_pass']));
         }
-        $superuser->touch();
-        return redirect('/superusers/'.$id.'/edit')->with('status', 'Superusuario actualizado correctamente!');
+        $deliverer->touch();
+        return redirect('/deliverers/'.$id.'/edit')->with('status', 'Deliverer actualizado correctamente!');
     }
 
     /**
@@ -117,9 +117,9 @@ class SuperuserController extends Controller
      */
     public function destroy($id)
     {
-        $superuser = Superuser::findOrFail($id);
-        $superuser->delete();
-        return redirect()->route('superusers.index')
-                        ->with('status','Superusuario eliminado correctamente!');
+        $deliverer = Deliverer::findOrFail($id);
+        $deliverer->delete();
+        return redirect()->route('deliverers.index')
+                        ->with('status','Deliverer eliminado correctamente!');
     }
 }
