@@ -38,7 +38,7 @@ class CreateMensakasDatabase extends Migration
             $table->string('first_name', 25);
             $table->string('last_name', 50);
             $table->tinyInteger('status')->default(1);
-            $table->string('email')->unique();
+            $table->string('email');
             $table->bigInteger('facebook_id')->nullable();
             $table->bigInteger('google_id')->nullable();
             $table->string('address');
@@ -69,6 +69,8 @@ class CreateMensakasDatabase extends Migration
         Schema::create('business_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('hash', 60)->nullable();
+            $table->string('first_name', 25);
+            $table->string('last_name', 50);
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('level')->nullable();
@@ -182,26 +184,33 @@ class CreateMensakasDatabase extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('business_id');
+            $table->unsignedBigInteger('deliverer_id')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->json('json');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('consumers');
             $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+            $table->foreign('deliverer_id')->references('id')->on('deliverers');a
         });
 
         // 16. Order Historical
         Schema::create('order_historical', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('business_id');
+            $table->unsignedBigInteger('deliverer_id')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->json('json');
             $table->timestamp('created_at', 0)->nullable();
             $table->timestamp('updated_at', 0)->nullable();
 
             $table->foreign('user_id')->references('id')->on('consumers');
+            $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+            $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
+        // TODO: Eliminar esta tabla
         // 17. Order Deliverer
         Schema::create('order_deliverer', function (Blueprint $table) {
             $table->unsignedBigInteger('order_id');

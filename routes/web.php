@@ -27,3 +27,5 @@ Route::get('/PanelDeControl', function() {
 Route::resource('superusers', 'SuperuserController');
 Route::resource('deliverers', 'DelivererController');
 Route::resource('consumers', 'ConsumerController');
+Route::resource('business', 'BusinessController');
+Route::resource('orders', 'OrderController');

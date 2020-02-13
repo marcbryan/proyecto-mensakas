@@ -16,7 +16,7 @@
         </a>
     </div>
     <div class="col-sm-2 col-12 mb-2 ">
-        <a class="btn btn-primary btn-block" href="" role="button"><i class="fas fa-building"></i><br>Bussiness</a>
+        <a class="btn btn-primary btn-block" href="{{route('business.index')}}" role="button"><i class="fas fa-building"></i><br>Bussiness</a>
     </div>
     <div class="col-sm-2 col-12 mb-2">
         <a class="btn btn-primary btn-block" href="" role="button">
@@ -26,7 +26,7 @@
         </a>
     </div>
     <div class="col-sm-2 col-12 mb-2">
-        <a class="btn btn-primary btn-block" href="" role="button"><i class="fas fa-list-ol"></i>
+        <a class="btn btn-primary btn-block" href="{{route('orders.index')}}" role="button"><i class="fas fa-list-ol"></i>
             <br>
             Orders
         </a>
