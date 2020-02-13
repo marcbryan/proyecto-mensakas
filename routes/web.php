@@ -19,7 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
+//Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
+Route::get('/PanelDeControl', function() {
+    return view('PanelDeControl');
+});
 
 Route::resource('superusers', 'SuperuserController');
 Route::resource('deliverers', 'DelivererController');

@@ -47,11 +47,11 @@ class ConsumerController extends Controller
             'zipcode' => 'required',
             'phone' => 'required'
         ]);
-        $consumer = $request->all();
-        $consumer->created_at = now();
-        $consumer->updated_at = now();
-
-        Consumer::create($consumer);
+        $request->merge([
+          'created_at' => now(),
+          'updated_at' => now(),
+        ]);
+        Consumer::create($request->all());
 
         // TODO: Cambiar texto hardcodeado
         return redirect()->route('consumers.index')

@@ -45,12 +45,12 @@ class SuperuserController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-        $superuser = $request->all();
-        $superuser->password = hash('sha256', $request->password);
-        $superuser->created_at = now();
-        $superuser->updated_at = now();
-
-        Superuser::create($superuser);
+        $request->merge([
+          'password' => hash('sha256', $request->password),
+          'created_at' => now(),
+          'updated_at' => now(),
+        ]);
+        Superuser::create($request->all());
 
         // TODO: Cambiar texto hardcodeado
         return redirect()->route('superusers.index')

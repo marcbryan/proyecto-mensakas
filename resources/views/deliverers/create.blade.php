@@ -6,7 +6,6 @@
 @section('content')
 <form action="{{route('deliverers.store')}}" method="post" class="mt-2">
   @csrf
-  @method('PUT')
 
   <div class="form-group">
     <label for="{{$columns[2]}}">Nombre</label>

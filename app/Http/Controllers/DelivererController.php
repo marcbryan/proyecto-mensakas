@@ -45,12 +45,12 @@ class DelivererController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-        $deliverer = $request->all();
-        $deliverer->password = hash('sha256', $request->password);
-        $deliverer->created_at = now();
-        $deliverer->updated_at = now();
-
-        Deliverer::create($deliverer);
+        $request->merge([
+          'password' => hash('sha256', $request->password),
+          'created_at' => now(),
+          'updated_at' => now(),
+        ]);
+        Deliverer::create($request->all());
 
         // TODO: Cambiar texto hardcodeado
         return redirect()->route('deliverers.index')
