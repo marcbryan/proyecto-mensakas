@@ -100,7 +100,7 @@
 
         </nav>
 
-        <main class="container">
+        <main>
             @yield('content')
         </main>
 

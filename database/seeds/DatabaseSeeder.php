@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
           ItemTableSeeder::class,
           ESTableSeeder::class,
           CATTableSeeder::class,
-          ENTableSeeder::class
+          ENTableSeeder::class,
+          LanguageTableSeeder::class,
+          MenuNameTableSeeder::class
         ]);
     }
 }

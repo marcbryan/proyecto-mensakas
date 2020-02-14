@@ -29,3 +29,4 @@ Route::resource('deliverers', 'DelivererController');
 Route::resource('consumers', 'ConsumerController');
 Route::resource('business', 'BusinessController');
 Route::resource('orders', 'OrderController');
+Route::resource('menus', 'MenuController');

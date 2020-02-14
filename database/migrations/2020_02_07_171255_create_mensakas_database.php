@@ -191,7 +191,7 @@ class CreateMensakasDatabase extends Migration
 
             $table->foreign('user_id')->references('id')->on('consumers');
             $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
-            $table->foreign('deliverer_id')->references('id')->on('deliverers');a
+            $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
         // 16. Order Historical
@@ -307,13 +307,13 @@ class CreateMensakasDatabase extends Migration
         // 25. Menus
         Schema::create('menus', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->unsignedBigInteger('key_id');
+          //$table->unsignedBigInteger('key_id');
           $table->unsignedBigInteger('business_id');
-          $table->decimal('price', 5,2);
+          $table->decimal('price', 5,2)->nullable();
           $table->tinyInteger('status')->default(1);
           $table->integer('sort');
 
-          $table->foreign('key_id')->references('id')->on('keys');
+          //$table->foreign('key_id')->references('id')->on('keys');
           $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
         });
 
@@ -337,6 +337,7 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('key_id')->references('id')->on('keys');
         });
 
+        // TODO: Eliminar tabla
         // 28. Idioma (ES)
         Schema::create('ES', function (Blueprint $table) {
           $table->unsignedBigInteger('key_id');
@@ -345,6 +346,7 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('key_id')->references('id')->on('keys');
         });
 
+        // TODO: Eliminar tabla
         // 29. Idioma (CAT)
         Schema::create('CAT', function (Blueprint $table) {
           $table->unsignedBigInteger('key_id');
@@ -353,6 +355,7 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('key_id')->references('id')->on('keys');
         });
 
+        // TODO: Eliminar tabla
         // 30. Idioma (EN)
         Schema::create('EN', function (Blueprint $table) {
           $table->unsignedBigInteger('key_id');
@@ -361,6 +364,21 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('key_id')->references('id')->on('keys');
         });
 
+        Schema::create('languages', function (Blueprint $table) {
+          //$table->bigIncrements('id');
+          $table->string('name', 3);
+
+          $table->primary('name');
+        });
+
+        Schema::create('menu_names', function (Blueprint $table) {
+          $table->string('text');
+          $table->unsignedBigInteger('menu_id');
+          $table->string('lang', 3);
+
+          $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+          $table->foreign('lang')->references('name')->on('languages');
+        });
     }
 
     /**

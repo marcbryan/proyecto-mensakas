@@ -11,10 +11,6 @@ class MenuTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=1; $i <= 10; $i++) {
-          factory(App\Menu::class)->create([
-            'key_id' => $i
-          ]);
-        }
+        factory(App\Menu::class, 10)->create();
     }
 }
