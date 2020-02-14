@@ -14,19 +14,20 @@
   background-size: cover;
 }
 
-
-
 @endsection
 
 @section('content')
-<div id="fondoPrincipal"></div>
  
 @endsection
 
 @section('scripts')
 <script type="text/javascript">
 	$( document ).ready(function() {
-  		$( "body > .container" ).removeClass( "container" );
+      $("body").css("background-image",'url("../../images/branding/fondo1.jpeg")');
+
+      $("body").css("background-position","center");
+      $("body").css("background-repeat","no-repeat");
+      $("body").css("background-size",'cover');
 	});
 	
 
