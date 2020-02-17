@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Superuser;
 
 // TODO: Mostrar errores
@@ -17,7 +18,7 @@ class SuperuserController extends Controller
     {
         $superusers = Superuser::all();
         $columns = Superuser::getTableColumns();
-        return view('superusers.index', ['superusers'=>$superusers, 'columns'=>$columns]);
+        return view('superusers.index', ['superusers'=>$superusers, 'columns'=>$columns, 'keys'=>Superuser::getFilterKeys()]);
     }
 
     /**
@@ -121,5 +122,20 @@ class SuperuserController extends Controller
         $superuser->delete();
         return redirect()->route('superusers.index')
                         ->withSuccess('Superusuario eliminado correctamente!');
+    }
+
+    public function filter(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'column' => 'required',
+            'value' => 'required',
+        ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
+        $superusers = Superuser::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
+        $columns = Superuser::getTableColumns();
+        return view('superusers.index', ['superusers'=>$superusers, 'columns'=>$columns, 'keys'=>Superuser::getFilterKeys()]);
     }
 }

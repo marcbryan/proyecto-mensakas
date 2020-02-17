@@ -24,6 +24,7 @@ Route::get('/PanelDeControl', function() {
     return view('PanelDeControl');
 });
 
+Route::get('superusers/filter', 'SuperuserController@filter');
 Route::resource('superusers', 'SuperuserController');
 Route::resource('deliverers', 'DelivererController');
 Route::resource('consumers', 'ConsumerController');
