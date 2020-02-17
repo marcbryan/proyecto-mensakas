@@ -39,6 +39,7 @@
         footer a{color:white;}
         footer a:hover, .nav-link:hover{ text-shadow: 2px 2px 5px white; color:white;}
         @yield('styles')
+        @yield('confirm-styles')
     </style>
 </head>
 <body>
@@ -62,6 +63,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
+                            <!-- TODO: Cambiar este enlace, cuando haya login -->
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route($model.'.index') }}">Volver</a>
                             </li>
@@ -101,6 +103,7 @@
         </nav>
 
         <main>
+            @yield('confirm')
             @yield('content')
         </main>
 

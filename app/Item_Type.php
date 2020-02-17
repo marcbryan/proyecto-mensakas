@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CAT extends Model
+class Item_Type extends Model
 {
-    protected $table = "CAT";
     public $timestamps = false;
+    protected $table = "item_types";
 }

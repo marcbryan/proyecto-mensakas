@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu_Name extends Model
+class Item_Name extends Model
 {
     public $timestamps = false;
-    protected $table = "menu_names";
+    protected $table = "item_names";
     protected $guarded = array();
 
-    public function menu()
+    public function item()
     {
-        return $this->belongsTo('App\Menu');
+        return $this->belongsTo('App\Item');
     }
 }

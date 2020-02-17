@@ -13,10 +13,11 @@ class CreateMensakasDatabase extends Migration
      */
     public function up()
     {
-        // 1. Keys
-        Schema::create('keys', function (Blueprint $table) {
-          $table->bigIncrements('id');
-          $table->string('key_name', 60);
+        // 1. Languages
+        Schema::create('languages', function (Blueprint $table) {
+          $table->string('name', 3);
+
+          $table->primary('name');
         });
 
         // 2. Superusers
@@ -118,8 +119,8 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
-        // 10. Business
-        Schema::create('business', function (Blueprint $table) {
+        // 10. Businesses
+        Schema::create('businesses', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->string('name', 40);
           $table->string('address', 200);
@@ -142,7 +143,7 @@ class CreateMensakasDatabase extends Migration
           $table->string('deviceToken', 64);
           $table->string('deviceAlias', 32);
           $table->timestamps();
-          $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+          $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
 
         // 12. Business TimeTable
@@ -152,22 +153,16 @@ class CreateMensakasDatabase extends Migration
             $table->time('open');
             $table->time('close');
 
-            $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
 
         // 13. Category
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('key_id');
-            $table->string('internal_name', 20);
-            $table->tinyInteger('for_adults')->default(0);
-            $table->string('background', 64)->nullable();
-            $table->string('type', 2)->nullable();
-            $table->tinyInteger('status')->default(1);
             $table->string('icon', 255)->nullable();
-            $table->string('color', 64)->nullable();
-
-            $table->foreign('key_id')->references('id')->on('keys');
+            $table->string('color', 7)->nullable();
+            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('for_adults')->default(0);
         });
 
         // 14. Business Categories
@@ -175,8 +170,18 @@ class CreateMensakasDatabase extends Migration
           $table->unsignedBigInteger('business_id');
           $table->unsignedBigInteger('category_id');
 
-          $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
-          $table->foreign('category_id')->references('id')->on('categories');
+          $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
+          $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+        });
+
+        // 15. Category Names
+        Schema::create('category_names', function (Blueprint $table) {
+          $table->string('name');
+          $table->unsignedBigInteger('category_id');
+          $table->string('lang', 3);
+
+          $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+          $table->foreign('lang')->references('name')->on('languages')->onDelete('cascade');
         });
 
         // 15. Orders
@@ -190,7 +195,7 @@ class CreateMensakasDatabase extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('consumers');
-            $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
             $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
@@ -206,23 +211,11 @@ class CreateMensakasDatabase extends Migration
             $table->timestamp('updated_at', 0)->nullable();
 
             $table->foreign('user_id')->references('id')->on('consumers');
-            $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
             $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
-        // TODO: Eliminar esta tabla
-        // 17. Order Deliverer
-        Schema::create('order_deliverer', function (Blueprint $table) {
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('deliverer_id');
-            $table->dateTime('date');
-            $table->tinyInteger('action')->nullable();
-
-            $table->foreign('order_id')->references('id')->on('order_historical');
-            $table->foreign('deliverer_id')->references('id')->on('deliverers');
-        });
-
-        // 18. Order Message
+        // 17. Order Message
         Schema::create('order_message', function (Blueprint $table) {
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('deliverer_id');
@@ -234,7 +227,7 @@ class CreateMensakasDatabase extends Migration
             $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
-        // 19. Payments
+        // 18. Payments
         Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_id');
@@ -246,7 +239,7 @@ class CreateMensakasDatabase extends Migration
             $table->foreign('order_id')->references('id')->on('order_historical');
         });
 
-        // 20. Invoice Series
+        // 19. Invoice Series
         Schema::create('invoice_series', function (Blueprint $table) {
           $table->string('id', 12);
           $table->string('name', 45);
@@ -254,7 +247,7 @@ class CreateMensakasDatabase extends Migration
           $table->primary('id');
         });
 
-        // 21. Invoices
+        // 20. Invoices
         Schema::create('invoices', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedBigInteger('order_id');
@@ -266,34 +259,48 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('series_id')->references('id')->on('invoice_series');
         });
 
-        // 22. Items
+        // 21. Item Types
+        Schema::create('item_types', function (Blueprint $table) {
+          $table->string('type', 3);
+
+          $table->primary('type');
+        });
+
+        // 22. Item Type Names
+        Schema::create('itemtype_names', function (Blueprint $table) {
+          $table->string('type', 3);
+          $table->string('name');
+          $table->string('lang', 3);
+
+          $table->foreign('type')->references('type')->on('item_types')->onDelete('cascade');
+          $table->foreign('lang')->references('name')->on('languages')->onDelete('cascade');
+        });
+
+        // 23. Items
         Schema::create('items', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->unsignedBigInteger('key_id');
-          $table->tinyInteger('status')->default(1);
+          $table->unsignedBigInteger('business_id');
           $table->decimal('price', 5, 2);
+          $table->tinyInteger('status')->default(1);
           $table->char('type', 3);
-          $table->unsignedBigInteger('description_key')->nullable();
           $table->tinyInteger('has_extras')->default(0);
           $table->string('image_url')->nullable();
 
-          $table->foreign('key_id')->references('id')->on('keys');
-          $table->foreign('description_key')->references('id')->on('keys');
+          $table->foreign('business_id')->references('id')->on('businesses');
+          $table->foreign('type')->references('type')->on('itemtype_names');
         });
 
-        // 23. Extras
+        // 24. Extras
         Schema::create('extras', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedBigInteger('business_id');
-          $table->unsignedBigInteger('key_id');
           $table->decimal('price', 5,2);
           $table->tinyInteger('group')->nullable();
 
-          $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
-          $table->foreign('key_id')->references('id')->on('keys');
+          $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
 
-        // 24. Item Extras
+        // 25. Item Extras
         Schema::create('item_extras', function (Blueprint $table) {
           $table->unsignedBigInteger('item_id');
           $table->unsignedBigInteger('extra_id');
@@ -301,23 +308,21 @@ class CreateMensakasDatabase extends Migration
 
           $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
           $table->foreign('extra_id')->references('id')->on('extras')->onDelete('cascade');
-          $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+          $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
 
-        // 25. Menus
+        // 26. Menus
         Schema::create('menus', function (Blueprint $table) {
           $table->bigIncrements('id');
-          //$table->unsignedBigInteger('key_id');
           $table->unsignedBigInteger('business_id');
           $table->decimal('price', 5,2)->nullable();
           $table->tinyInteger('status')->default(1);
           $table->integer('sort');
 
-          //$table->foreign('key_id')->references('id')->on('keys');
-          $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
+          $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
 
-        // 26. Menu Items
+        // 27. Menu Items
         Schema::create('menu_items', function (Blueprint $table) {
           $table->unsignedBigInteger('menu_id');
           $table->unsignedBigInteger('item_id');
@@ -326,58 +331,45 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
         });
 
-        // 27. Menu TimeTable
+        // 28. Menu TimeTable
         Schema::create('menu_timetable', function (Blueprint $table) {
           $table->unsignedBigInteger('menu_id');
-          $table->unsignedBigInteger('key_id');
           $table->time('start');
           $table->time('end');
 
           $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
-          $table->foreign('key_id')->references('id')->on('keys');
         });
 
-        // TODO: Eliminar tabla
-        // 28. Idioma (ES)
-        Schema::create('ES', function (Blueprint $table) {
-          $table->unsignedBigInteger('key_id');
-          $table->string('text');
-
-          $table->foreign('key_id')->references('id')->on('keys');
-        });
-
-        // TODO: Eliminar tabla
-        // 29. Idioma (CAT)
-        Schema::create('CAT', function (Blueprint $table) {
-          $table->unsignedBigInteger('key_id');
-          $table->string('text');
-
-          $table->foreign('key_id')->references('id')->on('keys');
-        });
-
-        // TODO: Eliminar tabla
-        // 30. Idioma (EN)
-        Schema::create('EN', function (Blueprint $table) {
-          $table->unsignedBigInteger('key_id');
-          $table->string('text');
-
-          $table->foreign('key_id')->references('id')->on('keys');
-        });
-
-        Schema::create('languages', function (Blueprint $table) {
-          //$table->bigIncrements('id');
-          $table->string('name', 3);
-
-          $table->primary('name');
-        });
-
+        // 29. Menu Names
         Schema::create('menu_names', function (Blueprint $table) {
-          $table->string('text');
+          $table->string('name');
           $table->unsignedBigInteger('menu_id');
           $table->string('lang', 3);
 
           $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
           $table->foreign('lang')->references('name')->on('languages');
+        });
+
+        // 30. Item Names
+        Schema::create('item_names', function(Blueprint $table) {
+          $table->string('name');
+          $table->string('description')->nullable();
+          $table->unsignedBigInteger('item_id');
+          $table->string('lang', 3);
+
+          $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
+          $table->foreign('lang')->references('name')->on('languages')->onDelete('cascade');
+        });
+
+        // TODO: Modelo, seeder y factory
+        // 31. Extra Names
+        Schema::create('extra_names', function (Blueprint $table) {
+          $table->string('name');
+          $table->unsignedBigInteger('extra_id');
+          $table->string('lang', 3);
+
+          $table->foreign('extra_id')->references('id')->on('extras')->onDelete('cascade');
+          $table->foreign('lang')->references('name')->on('languages')->onDelete('cascade');
         });
     }
 
@@ -396,7 +388,7 @@ class CreateMensakasDatabase extends Migration
         Schema::dropIfExists('deliverer_status');
         Schema::dropIfExists('deliverer_timetable');
         Schema::dropIfExists('deliverer_location');
-        Schema::dropIfExists('business');
+        Schema::dropIfExists('businesses');
         Schema::dropIfExists('business_devices');
         Schema::dropIfExists('business_timetable');
         Schema::dropIfExists('categories');
@@ -414,9 +406,5 @@ class CreateMensakasDatabase extends Migration
         Schema::dropIfExists('menus');
         Schema::dropIfExists('menu_items');
         Schema::dropIfExists('menu_timetable');
-        Schema::dropIfExists('keys');
-        Schema::dropIfExists('ES');
-        Schema::dropIfExists('CAT');
-        Schema::dropIfExists('EN');
     }
 }

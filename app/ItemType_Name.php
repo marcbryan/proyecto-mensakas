@@ -4,8 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EN extends Model
+class ItemType_Name extends Model
 {
-    protected $table = "EN";
     public $timestamps = false;
+    protected $table = "itemtype_names";
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use App\Deliverer;
 
+// TODO: Mostrar errores
 class DelivererController extends Controller
 {
     /**
@@ -16,7 +16,7 @@ class DelivererController extends Controller
     public function index()
     {
         $deliverers = Deliverer::all();
-        $columns = Schema::getColumnListing('deliverers');
+        $columns = Deliverer::getTableColumns();
         return view('deliverers.index', ['deliverers'=>$deliverers, 'columns'=>$columns]);
     }
 
@@ -27,7 +27,7 @@ class DelivererController extends Controller
      */
     public function create()
     {
-        $columns = Schema::getColumnListing('deliverers');
+        $columns = Deliverer::getTableColumns();
         return view('deliverers.create', ['columns'=>$columns]);
     }
 
@@ -54,7 +54,7 @@ class DelivererController extends Controller
 
         // TODO: Cambiar texto hardcodeado
         return redirect()->route('deliverers.index')
-                        ->with('success', 'Deliverer creado correctamente.');
+                        ->withSuccess('Deliverer creado correctamente.');
     }
 
     /**
@@ -65,7 +65,7 @@ class DelivererController extends Controller
      */
     public function show($id)
     {
-        $columns = Schema::getColumnListing('deliverers');
+        $columns = Deliverer::getTableColumns();
     }
 
     /**
@@ -76,7 +76,7 @@ class DelivererController extends Controller
      */
     public function edit($id)
     {
-        $columns = Schema::getColumnListing('deliverers');
+        $columns = Deliverer::getTableColumns();
         return view('deliverers.edit', ['deliverer' => Deliverer::findOrFail($id), 'columns' => $columns]);
     }
 
@@ -106,7 +106,7 @@ class DelivererController extends Controller
           $deliverer->update($request->except(['password', 'old_pass']));
         }
         $deliverer->touch();
-        return redirect('/deliverers/'.$id.'/edit')->with('status', 'Deliverer actualizado correctamente!');
+        return back()->withSuccess('Deliverer actualizado correctamente!');
     }
 
     /**
@@ -120,6 +120,6 @@ class DelivererController extends Controller
         $deliverer = Deliverer::findOrFail($id);
         $deliverer->delete();
         return redirect()->route('deliverers.index')
-                        ->with('status','Deliverer eliminado correctamente!');
+                        ->withSuccess('Deliverer eliminado correctamente!');
     }
 }

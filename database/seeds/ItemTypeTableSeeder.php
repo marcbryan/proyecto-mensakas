@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ItemTableSeeder extends Seeder
+class ItemTypeTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,17 +13,13 @@ class ItemTableSeeder extends Seeder
     {
         $keys = collect([
           ['type' => 'ENT'],
+          ['type' => 'PRI'],
           ['type' => 'SEG'],
-          ['type' => 'SEG'],
-          ['type' => 'SEG'],
-          ['type' => 'SEG'],
-          ['type' => 'OTH'],
-          ['type' => 'DRI'],
-          ['type' => 'DRI'],
-          ['type' => 'DRI'],
           ['type' => 'POS'],
+          ['type' => 'DRI'],
+          ['type' => 'OTH'],
         ])->mapWithKeys(function($key) {
-          return factory(App\Item::class)->create([
+          return factory(App\Item_Type::class)->create([
             'type' => $key['type'],
           ]);
         });

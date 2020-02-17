@@ -2,8 +2,10 @@
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;}
+form{padding: 0 15px;}
 @endsection
 @section('content')
+<?php // TODO: Mostrar errores ?>
 <form action="{{route('superusers.store')}}" method="post" class="mt-2">
   @csrf
 

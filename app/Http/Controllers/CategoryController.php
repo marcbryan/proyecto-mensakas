@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Menu;
-use App\Menu_Name;
+use App\Category;
+use App\Category_Name;
 use App\Business;
 
-// TODO: Mostrar si hay errores al realizar una acción
-class MenuController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +17,10 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::all();
-        $columns = Menu::getTableColumns();
-        $columns[1] = 'Nombre del menú';
-        array_splice($columns, 2, 0, 'Nombre del negocio');
-        return view('menus.index', ['menus'=>$menus, 'columns'=>$columns, 'lang'=>'ES']);
+        $categories = Category::all();
+        $columns = Category::getTableColumns();;
+        array_splice($columns, 1, 0, 'Nombre de la categoría');
+        return view('categories.index', ['categories'=>$categories, 'columns'=>$columns, 'lang'=>'ES']);
     }
 
     /**
@@ -32,9 +30,8 @@ class MenuController extends Controller
      */
     public function create()
     {
-        $columns = Menu::getTableColumns();
-        $businesses = Business::all('id', 'name');
-        return view('menus.create', ['columns'=>$columns, 'businesses'=>$businesses]);
+        $columns = Category::getTableColumns();
+        return view('categories.create', ['columns'=>$columns]);
     }
 
     /**
@@ -46,25 +43,26 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'business_id' => 'required',
+            'name' => 'required|max:255',
+            'icon' => 'nullable|max:255|url',
+            'color' => 'nullable'
         ]);
         if ($validator->fails()) {
           return back()
                       ->withErrors($validator)
                       ->withInput();
         }
-        $request->merge(['sort' => 1]);
-        $menu = Menu::create($request->except(['name']));
 
-        Menu_Name::create([
+        $category = Category::create($request->except(['name']));
+
+        Category_Name::create([
             'name'=> $request->name,
-            'menu_id' => $menu->id,
+            'category_id' => $category->id,
             'lang' => 'ES',
         ]);
 
-        return redirect()->route('menus.index')
-                        ->with('success', 'Menú creado correctamente.');
+        return redirect()->route('categories.index')
+                        ->with('success', 'Categoría creado correctamente.');
     }
 
     /**
@@ -75,7 +73,7 @@ class MenuController extends Controller
      */
     public function show($id)
     {
-        $columns = Menu::getTableColumns();
+        $columns = Category::getTableColumns();
     }
 
     /**
@@ -86,11 +84,10 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        // TODO: Cambiar valores
-        $columns = Menu::getTableColumns();
-        $menu = Menu::findOrFail($id);
-        $menu_name = $menu->names()->where('lang', 'ES')->value('name');
-        return view('menus.edit', ['menu' => $menu, 'columns' => $columns, 'menu_name' => $menu_name]);
+        $columns = Category::getTableColumns();
+        $category = Category::findOrFail($id);
+        $category_name = $category->names()->where('lang', 'ES')->value('name');
+        return view('categories.edit', ['category' => $category, 'columns' => $columns, 'category_name' => $category_name]);
     }
 
     /**
@@ -103,7 +100,9 @@ class MenuController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'menu_name' => 'required',
+            'category_name' => 'required|max:255',
+            'icon' => 'nullable|max:255|url',
+            'color' => 'nullable|max:7'
         ]);
         if ($validator->fails()) {
           return back()
@@ -115,11 +114,11 @@ class MenuController extends Controller
         } else {
           $request->merge(['status' => 0]);
         }
-        $menu = Menu::findOrFail($id);
-        $menu->update($request->except(['menu_name']));
-        $menu->names()->where('lang', 'ES')->update(['name' => $request->menu_name]);
+        $category = Category::findOrFail($id);
+        $category->update($request->except(['category_name']));
+        $category->names()->where('lang', 'ES')->update(['name' => $request->category_name]);
 
-        return back()->withSuccess('Menú actualizado correctamente!');
+        return back()->withSuccess('Categoría actualizada correctamente!');
     }
 
     /**
@@ -130,9 +129,9 @@ class MenuController extends Controller
      */
     public function destroy($id)
     {
-        $menu = Menu::findOrFail($id);
-        $menu->delete();
-        return redirect()->route('menus.index')
-                        ->withSuccess('Menu eliminado correctamente!');
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return redirect()->route('categories.index')
+                        ->withSuccess('Categoría eliminada correctamente!');
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use App\Consumer;
 
+// TODO: Mostrar errores
 class ConsumerController extends Controller
 {
     /**
@@ -16,7 +16,7 @@ class ConsumerController extends Controller
     public function index()
     {
         $consumers = Consumer::all();
-        $columns = Schema::getColumnListing('consumers');
+        $columns = Consumer::getTableColumns();
         return view('consumers.index', ['consumers'=>$consumers, 'columns'=>$columns]);
     }
 
@@ -27,7 +27,7 @@ class ConsumerController extends Controller
      */
     public function create()
     {
-        $columns = Schema::getColumnListing('consumers');
+        $columns = Consumer::getTableColumns();
         return view('consumers.create', ['columns'=>$columns]);
     }
 
@@ -55,7 +55,7 @@ class ConsumerController extends Controller
 
         // TODO: Cambiar texto hardcodeado
         return redirect()->route('consumers.index')
-                        ->with('success', 'Consumer creado correctamente.');
+                        ->withSuccess('Cliente creado correctamente.');
     }
 
     /**
@@ -66,7 +66,7 @@ class ConsumerController extends Controller
      */
     public function show($id)
     {
-        $columns = Schema::getColumnListing('consumers');
+        $columns = Consumer::getTableColumns();
     }
 
     /**
@@ -77,7 +77,7 @@ class ConsumerController extends Controller
      */
     public function edit($id)
     {
-        $columns = Schema::getColumnListing('consumers');
+        $columns = Consumer::getTableColumns();
         return view('consumers.edit', ['consumer' => Consumer::findOrFail($id), 'columns' => $columns]);
     }
 
@@ -102,7 +102,7 @@ class ConsumerController extends Controller
 
         $consumer->update($request->all());
         $consumer->touch();
-        return redirect('/consumers/'.$id.'/edit')->with('status', 'Consumer actualizado correctamente!');
+        return back()->withSuccess('Cliente actualizado correctamente!');
     }
 
     /**
@@ -116,6 +116,6 @@ class ConsumerController extends Controller
         $consumer = Consumer::findOrFail($id);
         $consumer->delete();
         return redirect()->route('consumers.index')
-                        ->with('status','Consumer eliminado correctamente!');
+                        ->withSuccess('Cliente eliminado correctamente!');
     }
 }

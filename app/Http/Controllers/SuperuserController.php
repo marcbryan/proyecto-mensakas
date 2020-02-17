@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use App\Superuser;
 
+// TODO: Mostrar errores
 class SuperuserController extends Controller
 {
     /**
@@ -16,7 +16,7 @@ class SuperuserController extends Controller
     public function index()
     {
         $superusers = Superuser::all();
-        $columns = Schema::getColumnListing('superusers');
+        $columns = Superuser::getTableColumns();
         return view('superusers.index', ['superusers'=>$superusers, 'columns'=>$columns]);
     }
 
@@ -27,7 +27,7 @@ class SuperuserController extends Controller
      */
     public function create()
     {
-        $columns = Schema::getColumnListing('superusers');
+        $columns = Superuser::getTableColumns();
         return view('superusers.create', ['columns'=>$columns]);
     }
 
@@ -54,7 +54,7 @@ class SuperuserController extends Controller
 
         // TODO: Cambiar texto hardcodeado
         return redirect()->route('superusers.index')
-                        ->with('success', 'Superusuario creado correctamente.');
+                        ->withSuccess('Superusuario creado correctamente.');
     }
 
     /**
@@ -65,7 +65,7 @@ class SuperuserController extends Controller
      */
     public function show($id)
     {
-        $columns = Schema::getColumnListing('superusers');
+        $columns = Superuser::getTableColumns();
     }
 
     /**
@@ -76,7 +76,7 @@ class SuperuserController extends Controller
      */
     public function edit($id)
     {
-        $columns = Schema::getColumnListing('superusers');
+        $columns = Superuser::getTableColumns();
         return view('superusers.edit', ['superuser' => Superuser::findOrFail($id), 'columns' => $columns]);
     }
 
@@ -106,7 +106,7 @@ class SuperuserController extends Controller
           $superuser->update($request->except(['password', 'old_pass']));
         }
         $superuser->touch();
-        return redirect('/superusers/'.$id.'/edit')->with('status', 'Superusuario actualizado correctamente!');
+        return back()->withSuccess('Superusuario actualizado correctamente!');
     }
 
     /**
@@ -120,6 +120,6 @@ class SuperuserController extends Controller
         $superuser = Superuser::findOrFail($id);
         $superuser->delete();
         return redirect()->route('superusers.index')
-                        ->with('status','Superusuario eliminado correctamente!');
+                        ->withSuccess('Superusuario eliminado correctamente!');
     }
 }

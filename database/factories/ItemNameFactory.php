@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Key;
+use App\Item_Name;
 use Faker\Generator as Faker;
 
-$factory->define(Key::class, function (Faker $faker) {
+$factory->define(Item_Name::class, function (Faker $faker) {
     return [
         //
     ];

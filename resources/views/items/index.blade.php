@@ -1,7 +1,8 @@
 @extends('layouts.app')
+@section('title', ' - Lista Productos')
 @section('styles')
 .row i{font-size:5vw; padding:3px}
-.container{max-width:inherit;padding:0;}
+.container{max-width:100vw; padding:0;}
 .row{margin:0;}
 div.row > div.col-lg-12{padding:0}
 @endsection
@@ -27,7 +28,7 @@ div.row > div.col-lg-12{padding:0}
     <div class="row my-2 ml-2">
         <div class="col-lg-12 margin-tb">
             <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('consumers.create') }}"> Nuevo Consumer</a>
+                <a class="btn btn-success" href="{{ route('items.create') }}"> Nuevo Producto</a>
             </div>
         </div>
     </div>
@@ -36,14 +37,21 @@ div.row > div.col-lg-12{padding:0}
       <table class="table table-hover">
         <tr>
           @foreach ($columns as $column)
-          <th>{{ $column }}</th>
+            <th>{{ $column }}</th>
           @endforeach
         </tr>
 
-        @foreach ($consumers as $consumer)
-        <tr class='clickable-row' data-href="{{ route('consumers.edit',$consumer->id) }}">
+        @foreach ($items as $item)
+        <tr class='clickable-row' data-href="{{ route('items.edit',$item->id) }}">
           @foreach ($columns as $column)
-          <td>{{ $consumer->$column }}</td>
+            @if ($loop->index == 1)
+            <td>{{ $item->nameIn($lang) }}</td>
+            <td>{{ $item->business->name }}</td>
+            @elseif ($loop->index == 5)
+            <td>{{ $item->typeIn($lang) }}</td>
+            @elseif ($loop->index == 0 or $loop->index > 2)
+            <td>{{ $item->$column }}</td>
+            @endif
           @endforeach
         </tr>
         @endforeach

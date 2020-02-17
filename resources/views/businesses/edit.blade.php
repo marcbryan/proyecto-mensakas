@@ -1,19 +1,19 @@
-@extends('layouts.logged', ['model'=>'business'])
+@extends('layouts.logged', ['model'=>'businesses'])
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
 @endsection
+
+@component('components.confirm', ['title'=>'Eliminar negocio', 'text'=>'Estás seguro que quieres eliminar el negocio "'.$business->name.'"?'])
+@endcomponent
+
 @section('content')
 
 <script type="text/javascript">
   $(function() {
-    $('form#delete').submit(function() {
-      var resp = confirm("Estás seguro que quieres eliminar este Business?");
-      if (resp) {
-        return true;
-      }
-      return false;
+    $('#confirmModal button#confirmButton').click(function() {
+      $('form#delete').submit();
     });
   });
 </script>
@@ -31,9 +31,9 @@ form.mt-4{margin:0 auto;width:60vw;}
     </div>
 @endif
 
-@if (session('status'))
+@if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('status') }}
+        {{ session('success') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -41,14 +41,14 @@ form.mt-4{margin:0 auto;width:60vw;}
 @endif
 
 <div class="row m-2 d-flex justify-content-end">
-  <form action="{{ route('business.destroy',$business->id) }}" id="delete" method="POST">
+  <form action="{{ route('businesses.destroy',$business->id) }}" id="delete" method="POST">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal">Eliminar</button>
   </form>
 </div>
 
-<form action="{{ route('business.update',$business->id) }}" method="post" class="mt-4">
+<form action="{{ route('businesses.update',$business->id) }}" method="post" class="mt-4">
   @csrf
   @method('PUT')
 

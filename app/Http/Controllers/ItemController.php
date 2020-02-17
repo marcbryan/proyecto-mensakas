@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Menu;
-use App\Menu_Name;
+use App\Item;
+use App\Item_Name;
+use App\ItemType_Name;
 use App\Business;
 
 // TODO: Mostrar si hay errores al realizar una acción
-class MenuController extends Controller
+class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +19,11 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::all();
-        $columns = Menu::getTableColumns();
-        $columns[1] = 'Nombre del menú';
+        $items = Item::all();
+        $columns = Item::getTableColumns();
+        $columns[1] = 'Nombre del producto';
         array_splice($columns, 2, 0, 'Nombre del negocio');
-        return view('menus.index', ['menus'=>$menus, 'columns'=>$columns, 'lang'=>'ES']);
+        return view('items.index', ['items'=>$items, 'columns'=>$columns, 'lang'=>'ES']);
     }
 
     /**
@@ -32,9 +33,10 @@ class MenuController extends Controller
      */
     public function create()
     {
-        $columns = Menu::getTableColumns();
+        $columns = Item::getTableColumns();
         $businesses = Business::all('id', 'name');
-        return view('menus.create', ['columns'=>$columns, 'businesses'=>$businesses]);
+        $types = ItemType_Name::where('lang', 'ES')->get();
+        return view('items.create', ['columns'=>$columns, 'businesses'=>$businesses, 'types'=>$types]);
     }
 
     /**
@@ -46,24 +48,27 @@ class MenuController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|max:255',
             'business_id' => 'required',
+            'price' => 'required|numeric|min:0.01',
+            'type' => 'required',
+            'image_url' => 'nullable|max:255|url'
         ]);
         if ($validator->fails()) {
           return back()
                       ->withErrors($validator)
                       ->withInput();
         }
-        $request->merge(['sort' => 1]);
-        $menu = Menu::create($request->except(['name']));
 
-        Menu_Name::create([
+        $item = Item::create($request->except(['name']));
+
+        Item_Name::create([
             'name'=> $request->name,
-            'menu_id' => $menu->id,
+            'item_id' => $item->id,
             'lang' => 'ES',
         ]);
 
-        return redirect()->route('menus.index')
+        return redirect()->route('items.index')
                         ->with('success', 'Menú creado correctamente.');
     }
 
@@ -75,7 +80,7 @@ class MenuController extends Controller
      */
     public function show($id)
     {
-        $columns = Menu::getTableColumns();
+        $columns = Item::getTableColumns();
     }
 
     /**
@@ -86,11 +91,11 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        // TODO: Cambiar valores
-        $columns = Menu::getTableColumns();
-        $menu = Menu::findOrFail($id);
-        $menu_name = $menu->names()->where('lang', 'ES')->value('name');
-        return view('menus.edit', ['menu' => $menu, 'columns' => $columns, 'menu_name' => $menu_name]);
+        $columns = Item::getTableColumns();
+        $item = Item::findOrFail($id);
+        $item_name = $item->names()->where('lang', 'ES')->value('name');
+        $types = ItemType_Name::where('lang', 'ES')->get();
+        return view('items.edit', ['item' => $item, 'columns' => $columns, 'item_name' => $item_name, 'types' => $types]);
     }
 
     /**
@@ -103,7 +108,10 @@ class MenuController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'menu_name' => 'required',
+            'item_name' => 'required|max:255',
+            'price' => 'required|numeric|min:0.01',
+            'type' => 'required',
+            'image_url' => 'nullable|max:255|url'
         ]);
         if ($validator->fails()) {
           return back()
@@ -115,9 +123,9 @@ class MenuController extends Controller
         } else {
           $request->merge(['status' => 0]);
         }
-        $menu = Menu::findOrFail($id);
-        $menu->update($request->except(['menu_name']));
-        $menu->names()->where('lang', 'ES')->update(['name' => $request->menu_name]);
+        $item = Item::findOrFail($id);
+        $item->update($request->except(['item_name']));
+        $item->names()->where('lang', 'ES')->update(['name' => $request->item_name]);
 
         return back()->withSuccess('Menú actualizado correctamente!');
     }
@@ -130,9 +138,9 @@ class MenuController extends Controller
      */
     public function destroy($id)
     {
-        $menu = Menu::findOrFail($id);
-        $menu->delete();
-        return redirect()->route('menus.index')
-                        ->withSuccess('Menu eliminado correctamente!');
+        $item = Item::findOrFail($id);
+        $item->delete();
+        return redirect()->route('items.index')
+                        ->withSuccess('Item eliminado correctamente!');
     }
 }

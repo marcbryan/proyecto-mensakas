@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\EN;
+use App\Category_Name;
 use Faker\Generator as Faker;
 
-$factory->define(EN::class, function (Faker $faker) {
+$factory->define(Category_Name::class, function (Faker $faker) {
     return [
         //
     ];

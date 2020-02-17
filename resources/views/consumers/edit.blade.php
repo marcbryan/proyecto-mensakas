@@ -4,16 +4,16 @@
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
 @endsection
+
+@component('components.confirm', ['title'=>'Eliminar cliente', 'text'=>'Estás seguro que quieres eliminar a '.$consumer->first_name.' '.$consumer->last_name.'?'])
+@endcomponent
+
 @section('content')
 
 <script type="text/javascript">
   $(function() {
-    $('form#delete').submit(function() {
-      var resp = confirm("Estás seguro que quieres eliminar este Consumer?");
-      if (resp) {
-        return true;
-      }
-      return false;
+    $('#confirmModal button#confirmButton').click(function() {
+      $('form#delete').submit();
     });
   });
 </script>
@@ -31,9 +31,9 @@ form.mt-4{margin:0 auto;width:60vw;}
     </div>
 @endif
 
-@if (session('status'))
+@if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('status') }}
+        {{ session('success') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -44,7 +44,7 @@ form.mt-4{margin:0 auto;width:60vw;}
   <form action="{{ route('consumers.destroy',$consumer->id) }}" id="delete" method="POST">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal">Eliminar</button>
   </form>
 </div>
 

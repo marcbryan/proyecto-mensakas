@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use App\Order;
 
+// TODO: Mostrar errores
 class OrderController extends Controller
 {
     /**
@@ -16,7 +16,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::all();
-        $columns = Schema::getColumnListing('orders');
+        $columns = Order::getTableColumns();
         return view('orders.index', ['orders'=>$orders, 'columns'=>$columns]);
     }
 
@@ -43,7 +43,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $columns = Schema::getColumnListing('orders');
+        $columns = Order::getTableColumns();
     }
 
     /**
@@ -54,7 +54,7 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $columns = Schema::getColumnListing('orders');
+        $columns = Order::getTableColumns();
         return view('orders.edit', ['order' => Order::findOrFail($id), 'columns' => $columns]);
     }
 
@@ -73,7 +73,7 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $order->update($request->all());
         $order->touch();
-        return redirect('/orders/'.$id.'/edit')->with('status', 'Order actualizado correctamente!');
+        return back()->withSuccess('Pedido actualizado correctamente!');
     }
 
     /**

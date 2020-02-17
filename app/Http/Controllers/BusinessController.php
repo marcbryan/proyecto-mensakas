@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 use App\Business;
 
+// TODO: Mostrar errores
 class BusinessController extends Controller
 {
     /**
@@ -15,9 +15,9 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        $business = Business::all();
-        $columns = Schema::getColumnListing('business');
-        return view('business.index', ['business'=>$business, 'columns'=>$columns]);
+        $businesses = Business::all();
+        $columns = Business::getTableColumns();
+        return view('businesses.index', ['businesses'=>$businesses, 'columns'=>$columns]);
     }
 
     /**
@@ -27,8 +27,8 @@ class BusinessController extends Controller
      */
     public function create()
     {
-        $columns = Schema::getColumnListing('business');
-        return view('business.create', ['columns'=>$columns]);
+        $columns = Business::getTableColumns();
+        return view('businesses.create', ['columns'=>$columns]);
     }
 
     /**
@@ -39,7 +39,6 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: Cambiar
         $request->validate([
             'name' => 'required',
             'address' => 'required',
@@ -54,8 +53,8 @@ class BusinessController extends Controller
         Business::create($request->all());
 
         // TODO: Cambiar texto hardcodeado
-        return redirect()->route('business.index')
-                        ->with('success', 'Business creado correctamente.');
+        return redirect()->route('businesses.index')
+                        ->withSuccess('Negocio creado correctamente.');
     }
 
     /**
@@ -66,7 +65,7 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        $columns = Schema::getColumnListing('business');
+        $columns = Business::getTableColumns();
     }
 
     /**
@@ -77,8 +76,8 @@ class BusinessController extends Controller
      */
     public function edit($id)
     {
-        $columns = Schema::getColumnListing('business');
-        return view('business.edit', ['business' => Business::findOrFail($id), 'columns' => $columns]);
+        $columns = Business::getTableColumns();
+        return view('businesses.edit', ['business' => Business::findOrFail($id), 'columns' => $columns]);
     }
 
     /**
@@ -101,7 +100,7 @@ class BusinessController extends Controller
 
         $business->update($request->all());
         $business->touch();
-        return redirect('/business/'.$id.'/edit')->with('status', 'Business actualizado correctamente!');
+        return back()->withSuccess('Negocio actualizado correctamente!');
     }
 
     /**
@@ -114,7 +113,7 @@ class BusinessController extends Controller
     {
         $business = Business::findOrFail($id);
         $business->delete();
-        return redirect()->route('business.index')
-                        ->with('status','Business eliminado correctamente!');
+        return redirect()->route('businesses.index')
+                        ->withSuccess('Negocio eliminado correctamente!');
     }
 }

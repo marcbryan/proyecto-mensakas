@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('styles')
 .row i{font-size:5vw; padding:3px}
-.container{max-width:inherit;}
+.container{max-width:100vw; padding:0;}
+.row{margin:0;}
+div.row > div.col-lg-12{padding:0}
 @endsection
 @section('content')
     <script type="text/javascript">
@@ -13,9 +15,9 @@
       });
     </script>
 
-    @if (session('status'))
+    @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ session('status') }}
+      {{ session('success') }}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>

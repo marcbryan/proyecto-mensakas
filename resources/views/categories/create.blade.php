@@ -1,5 +1,5 @@
-@extends('layouts.logged', ['model'=>'menus'])
-@section('title', ' - Crear Menú')
+@extends('layouts.logged', ['model'=>'categories'])
+@section('title', ' - Crear Categoría')
 @section('styles')
 .row i{font-size:5vw; margin-bottom:3px}
 .container{max-width:inherit;}
@@ -21,20 +21,19 @@ div.alert-danger > ul{margin-bottom: 0;}
 </div>
 @endif
 
-<form action="{{route('menus.store')}}" method="post" class="mt-2">
+<form action="{{route('categories.store')}}" method="post" class="mt-2">
   @csrf
-
   <div class="form-group">
-    <label for="name">Nombre del menú</label>
+    <label for="name">Nombre de la categoría</label>
     <input type="text" name="name" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[1]}}">Negocio que tendrá este menú: </label>
-    <select class="form-control" name="{{$columns[1]}}">
-      @foreach ($businesses as $business)
-        <option value="{{$business->id}}">{{$business->name}}</option>
-      @endforeach
-    </select>
+    <label for="icon">Enlace de la imagen de la categoría</label>
+    <input type="text" name="icon" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="color">Color para la categoría</label>
+    <input type="color" name="color" class="form-control">
   </div>
   <input type="submit" class="btn btn-primary" value="Crear">
 </form>

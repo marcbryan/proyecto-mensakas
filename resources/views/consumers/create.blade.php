@@ -2,11 +2,12 @@
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;}
+form{padding: 0 15px;}
 @endsection
 @section('content')
 <form action="{{route('consumers.store')}}" method="post" class="mt-2">
+  <?php // TODO: Mostrar errores ?>
   @csrf
-
   <div class="form-group">
     <label for="{{$columns[2]}}">Nombre</label>
     <input type="text" name="{{$columns[2]}}" class="form-control">
