@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
           BusinessTableSeeder::class,
           SuperuserTableSeeder::class,
           ConsumerTableSeeder::class,
+          DelivererTableSeeder::class,
+          DelivererLocationTableSeeder::class,
           MenuTableSeeder::class,
           CategoryTableSeeder::class,
           CategoryNameTableSeeder::class,
@@ -24,6 +26,8 @@ class DatabaseSeeder extends Seeder
           ItemTableSeeder::class,
           MenuNameTableSeeder::class,
           ItemNameTableSeeder::class,
+          OrderTableSeeder::class,
+          PaymentTableSeeder::class,
         ]);
     }
 }
