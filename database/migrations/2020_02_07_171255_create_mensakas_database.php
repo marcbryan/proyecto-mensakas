@@ -105,6 +105,9 @@ class CreateMensakasDatabase extends Migration
           $table->unsignedBigInteger('deliverer_id');
 
           $table->foreign('deliverer_id')->references('id')->on('deliverers');
+          $table->timestamp('created_at', 0)->nullable();
+          $table->timestamp('updated_at', 0)->nullable();
+
         });
 
         // 9. Businesses

@@ -12,7 +12,9 @@ $factory->define(Deliverer_Location::class, function (Faker $faker) {
         'deliverer_id' => $faker->numberBetween($min = 1, $max = 25),
         'lat' => $faker->latitude($min = -90, $max = 90),
         'lon' => $faker->longitude($min = -180, $max = 180),
-        'precision' => "1",
-        'provider' => "Google",
+        'precision' => $faker->numberBetween($min = 1, $max = 10),
+        'provider' => "1",
+        'created_at' => now(),
+        'updated_at' => now()
     ];
 });
