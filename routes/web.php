@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
 
+Route::get('/PanelUsers', 'HomeController@PanelUsers');
 Route::get('superusers/filter', 'SuperuserController@filter');
 Route::resource('superusers', 'SuperuserController');
 Route::resource('deliverers', 'DelivererController');
@@ -30,3 +31,5 @@ Route::resource('orders', 'OrderController');
 Route::resource('menus', 'MenuController');
 Route::resource('items', 'ItemController');
 Route::resource('categories', 'CategoryController');
+
+
