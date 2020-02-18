@@ -9,20 +9,20 @@ form{padding: 0 15px;}
   <?php // TODO: Mostrar errores ?>
   @csrf
   <div class="form-group">
-    <label for="{{$columns[2]}}">Nombre</label>
-    <input type="text" name="{{$columns[2]}}" class="form-control">
+    <label for="first_name">Nombre</label>
+    <input type="text" name="first_name" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[3]}}">Apellidos</label>
-    <input type="text" name="{{$columns[3]}}" class="form-control">
+    <label for="last_name">Apellidos</label>
+    <input type="text" name="last_name" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[4]}}">Correo electrónico</label>
-    <input type="text" name="{{$columns[4]}}" class="form-control">
+    <label for="email">Correo electrónico</label>
+    <input type="text" name="email" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[5]}}">Contraseña</label>
-    <input type="password" name="{{$columns[5]}}" class="form-control">
+    <label for="password">Contraseña</label>
+    <input type="password" name="password" class="form-control">
   </div>
   <input type="submit" class="btn btn-primary" value="Crear">
 </form>

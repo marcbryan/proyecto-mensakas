@@ -4,9 +4,6 @@
 @endsection
 @section('content')
 <script type="text/javascript">
-  $(function() {
-    $('.nav-item').remove();
-  });
 </script>
 <dir class="row mt-3 mx-0 p-0 justify-content-center">
     <div class="col-sm-2 col-12 mb-2 ">

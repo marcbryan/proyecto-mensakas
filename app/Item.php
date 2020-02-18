@@ -34,4 +34,8 @@ class Item extends Model
     {
       return $this->belongsTo('App\Business');
     }
+
+    public static function getFilterKeys() {
+      return ['product_name' => 'Nombre del producto', 'business_name' => 'Nombre del negocio', 'price' => 'Precio', 'type' => 'Tipo'];
+    }
 }

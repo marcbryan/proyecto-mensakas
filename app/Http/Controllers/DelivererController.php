@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Deliverer;
 
 // TODO: Mostrar errores
@@ -17,7 +18,7 @@ class DelivererController extends Controller
     {
         $deliverers = Deliverer::all();
         $columns = Deliverer::getTableColumns();
-        return view('deliverers.index', ['deliverers'=>$deliverers, 'columns'=>$columns]);
+        return view('deliverers.index', ['deliverers'=>$deliverers, 'columns'=>$columns, 'keys'=>Deliverer::getFilterKeys()]);
     }
 
     /**
@@ -27,8 +28,7 @@ class DelivererController extends Controller
      */
     public function create()
     {
-        $columns = Deliverer::getTableColumns();
-        return view('deliverers.create', ['columns'=>$columns]);
+        return view('deliverers.create');
     }
 
     /**
@@ -76,8 +76,7 @@ class DelivererController extends Controller
      */
     public function edit($id)
     {
-        $columns = Deliverer::getTableColumns();
-        return view('deliverers.edit', ['deliverer' => Deliverer::findOrFail($id), 'columns' => $columns]);
+        return view('deliverers.edit', ['deliverer' => Deliverer::findOrFail($id)]);
     }
 
     /**
@@ -121,5 +120,20 @@ class DelivererController extends Controller
         $deliverer->delete();
         return redirect()->route('deliverers.index')
                         ->withSuccess('Deliverer eliminado correctamente!');
+    }
+
+    public function filter(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'column' => 'required',
+            'value' => 'required',
+        ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
+        $deliverers = Deliverer::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
+        $columns = Deliverer::getTableColumns();
+        return view('deliverers.index', ['deliverers'=>$deliverers, 'columns'=>$columns, 'keys'=>Deliverer::getFilterKeys()]);
     }
 }

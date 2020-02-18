@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Consumer;
 
 // TODO: Mostrar errores
@@ -17,7 +18,7 @@ class ConsumerController extends Controller
     {
         $consumers = Consumer::all();
         $columns = Consumer::getTableColumns();
-        return view('consumers.index', ['consumers'=>$consumers, 'columns'=>$columns]);
+        return view('consumers.index', ['consumers'=>$consumers, 'columns'=>$columns, 'keys'=>Consumer::getFilterKeys()]);
     }
 
     /**
@@ -27,8 +28,7 @@ class ConsumerController extends Controller
      */
     public function create()
     {
-        $columns = Consumer::getTableColumns();
-        return view('consumers.create', ['columns'=>$columns]);
+        return view('consumers.create');
     }
 
     /**
@@ -77,8 +77,7 @@ class ConsumerController extends Controller
      */
     public function edit($id)
     {
-        $columns = Consumer::getTableColumns();
-        return view('consumers.edit', ['consumer' => Consumer::findOrFail($id), 'columns' => $columns]);
+        return view('consumers.edit', ['consumer' => Consumer::findOrFail($id)]);
     }
 
     /**
@@ -117,5 +116,20 @@ class ConsumerController extends Controller
         $consumer->delete();
         return redirect()->route('consumers.index')
                         ->withSuccess('Cliente eliminado correctamente!');
+    }
+
+    public function filter(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'column' => 'required',
+            'value' => 'required',
+        ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
+        $consumers = Consumer::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
+        $columns = Consumer::getTableColumns();
+        return view('consumers.index', ['consumers'=>$consumers, 'columns'=>$columns, 'keys'=>Consumer::getFilterKeys()]);
     }
 }

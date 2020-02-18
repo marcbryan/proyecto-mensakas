@@ -3,14 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Consumer extends Model
 {
     protected $guarded = array();
 
     public static function getTableColumns() {
-      $columns = DB::select(DB::raw('SHOW COLUMNS FROM consumers'));
-      return array_column($columns, 'Field');
+      return ['id', 'first_name', 'last_name', 'email', 'address', 'zipcode', 'phone', 'status'];
+    }
+
+    public static function getFilterKeys() {
+      return ['first_name' => 'Nombre', 'last_name' => 'Apellidos', 'email' => 'Correo electrónico', 'address' => 'Dirección', 'zipcode' => 'Código Postal', 'phone' => 'Teléfono'];
     }
 }

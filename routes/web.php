@@ -21,12 +21,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
 
-Route::get('superusers/filter', 'SuperuserController@filter');
+Route::get('/superusers/filter', 'SuperuserController@filter');
 Route::resource('superusers', 'SuperuserController');
+
+Route::get('/deliverers/filter', 'DelivererController@filter');
 Route::resource('deliverers', 'DelivererController');
+
+Route::get('/consumers/filter', 'ConsumerController@filter');
 Route::resource('consumers', 'ConsumerController');
+
 Route::resource('businesses', 'BusinessController');
 Route::resource('orders', 'OrderController');
 Route::resource('menus', 'MenuController');
+
+Route::get('/items/filter', 'ItemController@filter');
 Route::resource('items', 'ItemController');
+
 Route::resource('categories', 'CategoryController');

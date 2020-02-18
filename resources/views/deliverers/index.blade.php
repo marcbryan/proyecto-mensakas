@@ -3,12 +3,11 @@
 .row i{font-size:5vw; padding:3px}
 .container{max-width:100vw; padding:0;}
 .row{margin:0;}
-div.row > div.col-lg-12{padding:0}
+div.row.d-flex{margin:0;flex-direction:row;justify-content:space-between;}
 @endsection
 @section('content')
     <script type="text/javascript">
       $(function() {
-        $('.nav-item').remove();
         $('.clickable-row').click(function() {
           window.location = $(this).data("href");
         });
@@ -24,12 +23,10 @@ div.row > div.col-lg-12{padding:0}
     </div>
     @endif
 
-    <div class="row my-2 ml-2">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('deliverers.create') }}"> Nuevo Deliverer</a>
-            </div>
-        </div>
+    <div class="row my-2 ml-2 d-flex">
+      <a class="btn btn-success" href="{{ route('deliverers.create') }}"> Nuevo Deliverer</a>
+      @component('components.filter', ['model' => 'deliverers', 'keys' => $keys])
+      @endcomponent
     </div>
 
     <div class="table-responsive-sm">

@@ -53,28 +53,28 @@ form.mt-4{margin:0 auto;width:60vw;}
   @method('PUT')
 
   <div class="form-group">
-    <label for="{{$columns[2]}}">Nombre</label>
-    <input type="text" name="{{$columns[2]}}" class="form-control" value="{{$consumer->first_name}}">
+    <label for="first_name">Nombre</label>
+    <input type="text" name="first_name" class="form-control" value="{{$consumer->first_name}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[3]}}">Apellidos</label>
-    <input type="text" name="{{$columns[3]}}" class="form-control" value="{{$consumer->last_name}}">
+    <label for="last_name">Apellidos</label>
+    <input type="text" name="last_name" class="form-control" value="{{$consumer->last_name}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[5]}}">Correo electrónico</label>
-    <input type="text" name="{{$columns[5]}}" class="form-control" value="{{$consumer->email}}">
+    <label for="email">Correo electrónico</label>
+    <input type="text" name="email" class="form-control" value="{{$consumer->email}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[8]}}">Dirección</label>
-    <input type="text" name="{{$columns[8]}}" class="form-control" value="{{$consumer->address}}">
+    <label for="address">Dirección</label>
+    <input type="text" name="address" class="form-control" value="{{$consumer->address}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[9]}}">Código postal</label>
-    <input type="text" name="{{$columns[9]}}" class="form-control" value="{{$consumer->zipcode}}">
+    <label for="zipcode">Código postal</label>
+    <input type="text" name="zipcode" class="form-control" value="{{$consumer->zipcode}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[10]}}">Teléfono</label>
-    <input type="text" name="{{$columns[10]}}" class="form-control" value="{{$consumer->phone}}">
+    <label for="phone">Teléfono</label>
+    <input type="text" name="phone" class="form-control" value="{{$consumer->phone}}">
   </div>
   <input type="submit" class="btn btn-primary" value="Actualizar">
 </form>

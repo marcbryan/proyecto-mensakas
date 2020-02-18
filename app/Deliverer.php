@@ -3,14 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Deliverer extends Model
 {
     protected $guarded = array();
 
     public static function getTableColumns() {
-      $columns = DB::select(DB::raw('SHOW COLUMNS FROM deliverers'));
-      return array_column($columns, 'Field');
+      return ['id', 'first_name', 'last_name', 'email', 'status', 'created_at', 'updated_at'];
+    }
+
+    public static function getFilterKeys() {
+      return ['first_name' => 'Nombre', 'last_name' => 'Apellidos', 'email' => 'Correo electrónico'];
     }
 }

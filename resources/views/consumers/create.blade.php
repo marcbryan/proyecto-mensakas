@@ -9,28 +9,28 @@ form{padding: 0 15px;}
   <?php // TODO: Mostrar errores ?>
   @csrf
   <div class="form-group">
-    <label for="{{$columns[2]}}">Nombre</label>
-    <input type="text" name="{{$columns[2]}}" class="form-control">
+    <label for="first_name">Nombre</label>
+    <input type="text" name="first_name" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[3]}}">Apellidos</label>
-    <input type="text" name="{{$columns[3]}}" class="form-control">
+    <label for="last_name">Apellidos</label>
+    <input type="text" name="last_name" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[5]}}">Correo electrónico</label>
-    <input type="text" name="{{$columns[5]}}" class="form-control">
+    <label for="email">Correo electrónico</label>
+    <input type="text" name="email" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[8]}}">Dirección</label>
-    <input type="text" name="{{$columns[8]}}" class="form-control">
+    <label for="address">Dirección</label>
+    <input type="text" name="address" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[9]}}">Código postal</label>
-    <input type="text" name="{{$columns[9]}}" class="form-control">
+    <label for="zipcode">Código postal</label>
+    <input type="text" name="zipcode" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[10]}}">Teléfono</label>
-    <input type="text" name="{{$columns[10]}}" class="form-control">
+    <label for="phone">Teléfono</label>
+    <input type="text" name="phone" class="form-control">
   </div>
   <input type="submit" class="btn btn-primary" value="Crear">
 </form>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 use App\Item;
 use App\Item_Name;
 use App\ItemType_Name;
@@ -12,6 +13,7 @@ use App\Business;
 // TODO: Mostrar si hay errores al realizar una acción
 class ItemController extends Controller
 {
+    private $lang = 'ES';
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +25,7 @@ class ItemController extends Controller
         $columns = Item::getTableColumns();
         $columns[1] = 'Nombre del producto';
         array_splice($columns, 2, 0, 'Nombre del negocio');
-        return view('items.index', ['items'=>$items, 'columns'=>$columns, 'lang'=>'ES']);
+        return view('items.index', ['items'=>$items, 'columns'=>$columns, 'lang'=>$this->lang, 'keys'=>Item::getFilterKeys()]);
     }
 
     /**
@@ -35,7 +37,7 @@ class ItemController extends Controller
     {
         $columns = Item::getTableColumns();
         $businesses = Business::all('id', 'name');
-        $types = ItemType_Name::where('lang', 'ES')->get();
+        $types = ItemType_Name::where('lang', $this->lang)->get();
         return view('items.create', ['columns'=>$columns, 'businesses'=>$businesses, 'types'=>$types]);
     }
 
@@ -65,7 +67,7 @@ class ItemController extends Controller
         Item_Name::create([
             'name'=> $request->name,
             'item_id' => $item->id,
-            'lang' => 'ES',
+            'lang' => $this->lang,
         ]);
 
         return redirect()->route('items.index')
@@ -93,8 +95,8 @@ class ItemController extends Controller
     {
         $columns = Item::getTableColumns();
         $item = Item::findOrFail($id);
-        $item_name = $item->names()->where('lang', 'ES')->value('name');
-        $types = ItemType_Name::where('lang', 'ES')->get();
+        $item_name = $item->names()->where('lang', $this->lang)->value('name');
+        $types = ItemType_Name::where('lang', $this->lang)->get();
         return view('items.edit', ['item' => $item, 'columns' => $columns, 'item_name' => $item_name, 'types' => $types]);
     }
 
@@ -125,9 +127,9 @@ class ItemController extends Controller
         }
         $item = Item::findOrFail($id);
         $item->update($request->except(['item_name']));
-        $item->names()->where('lang', 'ES')->update(['name' => $request->item_name]);
+        $item->names()->where('lang', $this->lang)->update(['name' => $request->item_name]);
 
-        return back()->withSuccess('Menú actualizado correctamente!');
+        return back()->withSuccess('Producto actualizado correctamente!');
     }
 
     /**
@@ -141,6 +143,45 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
         $item->delete();
         return redirect()->route('items.index')
-                        ->withSuccess('Item eliminado correctamente!');
+                        ->withSuccess('Producto eliminado correctamente!');
+    }
+
+    public function filter(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'column' => 'required',
+            'value' => 'required',
+        ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
+        if ($request->column == 'price') {
+          $items = Item::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
+        }
+        else if ($request->column == 'product_name') {
+          // TODO: Revisar esta parte
+          $names = Item_Name::where('lang', $this->lang)->where('name', 'LIKE', '%'.$request->value.'%')->get();
+          $items = new Collection();
+          foreach ($names as $name) {
+            $found = $name->item();//Item::where($request->column, $name->item_id)->get();
+            $items = $items->merge($found);
+          }
+        }
+        else if ($request->column == 'business_name') {
+          // TODO: Filtro negocios
+        }
+        else if ($request->column == 'type') {
+          $types = ItemType_Name::where('lang', $this->lang)->where('name', 'LIKE', '%'.$request->value.'%')->get();
+          $items = new Collection();
+          foreach ($types as $type) {
+            $found = Item::where($request->column, $type->type)->get();
+            $items = $items->merge($found);
+          }
+        }
+        $columns = Item::getTableColumns();
+        $columns[1] = 'Nombre del producto';
+        array_splice($columns, 2, 0, 'Nombre del negocio');
+        return view('items.index', ['items'=>$items, 'columns'=>$columns, 'lang'=>$this->lang, 'keys'=>Item::getFilterKeys()]);
     }
 }
