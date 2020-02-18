@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'categories'])
+@extends('layouts.app', ['model'=>'categories'])
 @section('title', ' - Crear Categoría')
 @section('styles')
 .row i{font-size:5vw; margin-bottom:3px}

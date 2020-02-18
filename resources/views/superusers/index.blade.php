@@ -38,21 +38,8 @@ div.row.d-flex{margin:0;flex-direction:row;justify-content:space-between;}
 
     <div class="row my-2 ml-2 d-flex">
       <a class="btn btn-success" href="{{ route('superusers.create') }}"> Nuevo Superusuario</a>
-      <form class="form-inline mr-2" action="/superusers/filter" method="GET">
-        @csrf
-        <div class="form-group mr-2">
-          <select class="form-control" name="column">
-            @foreach ($keys as $key => $value)
-            <option value="{{ $key }}">{{ $value }}</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="form-group mr-2">
-          <label for="value"></label>
-          <input type="text" name="value" class="form-control" placeholder="Valor a buscar">
-        </div>
-        <input type="submit" class="btn btn-primary" value="Buscar">
-      </form>
+      @component('components.filter', ['model' => 'superusers', 'keys' => $keys])
+      @endcomponent
     </div>
 
     <div class="table-responsive-sm">

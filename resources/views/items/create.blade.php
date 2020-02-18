@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'items'])
+@extends('layouts.app', ['model'=>'items'])
 @section('title', ' - Crear Producto')
 @section('styles')
 .row i{font-size:5vw; margin-bottom:3px}
@@ -43,7 +43,7 @@ div.alert-danger > ul{margin-bottom: 0;}
   </div>
   <div class="form-group">
     <label for="{{$columns[1]}}">Negocio que tendrá este producto: </label>
-    <select class="form-control" name="{{$columns[1]}}">
+    <select class="form-control custom-select" name="{{$columns[1]}}">
       @foreach ($businesses as $business)
         <option value="{{$business->id}}">{{$business->name}}</option>
       @endforeach
@@ -55,7 +55,7 @@ div.alert-danger > ul{margin-bottom: 0;}
   </div>
   <div class="form-group">
     <label for="type">Tipo</label>
-    <select class="form-control" name="type">
+    <select class="form-control custom-select" name="type">
       @foreach ($types as $type)
         <option value="{{$type->type}}">{{$type->name}}</option>
       @endforeach

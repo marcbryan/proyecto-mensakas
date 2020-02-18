@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'consumers'])
+@extends('layouts.app', ['model'=>'consumers'])
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;}

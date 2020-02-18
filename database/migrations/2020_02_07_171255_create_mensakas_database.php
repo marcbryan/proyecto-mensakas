@@ -20,19 +20,7 @@ class CreateMensakasDatabase extends Migration
           $table->primary('name');
         });
 
-        // 2. Superusers
-        Schema::create('superusers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('hash', 60)->nullable();
-            $table->string('first_name', 25);
-            $table->string('last_name', 50);
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-
-        // 3. Consumers
+        // 2. Consumers
         Schema::create('consumers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('hash', 60)->nullable();
@@ -49,7 +37,7 @@ class CreateMensakasDatabase extends Migration
             $table->timestamps();
         });
 
-        // 4. Deliverer
+        // 3. Deliverer
         Schema::create('deliverers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('hash', 60)->nullable();
@@ -66,7 +54,7 @@ class CreateMensakasDatabase extends Migration
             $table->timestamps();
         });
 
-        // 5. Business Users
+        // 4. Business Users
         Schema::create('business_users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('hash', 60)->nullable();
@@ -79,7 +67,7 @@ class CreateMensakasDatabase extends Migration
             $table->timestamps();
         });
 
-        // 6. Token Sent
+        // 5. Token Sent
         Schema::create('token_sent', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('email');
@@ -91,13 +79,13 @@ class CreateMensakasDatabase extends Migration
             $table->timestamp('created_at', 0);
         });
 
-        // 7. Deliverer Status
+        // 6. Deliverer Status
         Schema::create('deliverer_status', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 30);
         });
 
-        // 8. Deliverer TimeTable
+        // 7. Deliverer TimeTable
         Schema::create('deliverer_timetable', function (Blueprint $table) {
             $table->unsignedBigInteger('deliverer_id');
             $table->tinyInteger('day');
@@ -107,7 +95,7 @@ class CreateMensakasDatabase extends Migration
             $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
-        // 9. Deliverer Location
+        // 8. Deliverer Location
         Schema::create('deliverer_location', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->decimal('lat', 11, 8);
@@ -119,7 +107,7 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('deliverer_id')->references('id')->on('deliverers');
         });
 
-        // 10. Businesses
+        // 9. Businesses
         Schema::create('businesses', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->string('name', 40);
@@ -135,7 +123,7 @@ class CreateMensakasDatabase extends Migration
           $table->timestamps();
         });
 
-        // 11. Business Devices
+        // 10. Business Devices
         Schema::create('business_devices', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedBigInteger('business_id');
@@ -146,7 +134,7 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
 
-        // 12. Business TimeTable
+        // 11. Business TimeTable
         Schema::create('business_timetable', function (Blueprint $table) {
             $table->unsignedBigInteger('business_id');
             $table->tinyInteger('day');
@@ -156,7 +144,7 @@ class CreateMensakasDatabase extends Migration
             $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
         });
 
-        // 13. Category
+        // 12. Category
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('icon', 255)->nullable();
@@ -165,7 +153,7 @@ class CreateMensakasDatabase extends Migration
             $table->tinyInteger('for_adults')->default(0);
         });
 
-        // 14. Business Categories
+        // 13. Business Categories
         Schema::create('business_categories', function (Blueprint $table) {
           $table->unsignedBigInteger('business_id');
           $table->unsignedBigInteger('category_id');
@@ -174,7 +162,7 @@ class CreateMensakasDatabase extends Migration
           $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
 
-        // 15. Category Names
+        // 14. Category Names
         Schema::create('category_names', function (Blueprint $table) {
           $table->string('name');
           $table->unsignedBigInteger('category_id');
@@ -380,7 +368,6 @@ class CreateMensakasDatabase extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('superusers');
         Schema::dropIfExists('consumers');
         Schema::dropIfExists('deliverers');
         Schema::dropIfExists('business_users');

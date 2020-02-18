@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'categories'])
+@extends('layouts.app', ['model'=>'categories'])
 @section('title')
  - Editar {{$category_name}}
 @endsection

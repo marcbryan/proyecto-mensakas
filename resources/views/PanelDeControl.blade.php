@@ -8,7 +8,7 @@
     $('.nav-item').remove();
   });
 </script>
-<dir class="row mt-3 justify-content-center">
+<dir class="row mt-3 mx-0 p-0 justify-content-center">
     <div class="col-sm-2 col-12 mb-2 ">
         <a class="btn btn-primary btn-block" href="{{route('superusers.index')}}" role="button">
             <i class="fas fa-users"></i>
@@ -16,10 +16,10 @@
         </a>
     </div>
     <div class="col-sm-2 col-12 mb-2 ">
-        <a class="btn btn-primary btn-block" href="{{route('business.index')}}" role="button"><i class="fas fa-building"></i><br>Bussiness</a>
+        <a class="btn btn-primary btn-block" href="{{route('businesses.index')}}" role="button"><i class="fas fa-building"></i><br>Bussiness</a>
     </div>
     <div class="col-sm-2 col-12 mb-2">
-        <a class="btn btn-primary btn-block" href="" role="button">
+        <a class="btn btn-primary btn-block" href="{{route('menus.index')}}" role="button">
             <i class="fas fa-book-open"></i>
             <br>
             Menu

@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'menus'])
+@extends('layouts.app', ['model'=>'menus'])
 @section('title', ' - Crear Menú')
 @section('styles')
 .row i{font-size:5vw; margin-bottom:3px}
@@ -30,7 +30,7 @@ div.alert-danger > ul{margin-bottom: 0;}
   </div>
   <div class="form-group">
     <label for="{{$columns[1]}}">Negocio que tendrá este menú: </label>
-    <select class="form-control" name="{{$columns[1]}}">
+    <select class="form-control custom-select" name="{{$columns[1]}}">
       @foreach ($businesses as $business)
         <option value="{{$business->id}}">{{$business->name}}</option>
       @endforeach

@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'order'])
+@extends('layouts.app', ['model'=>'order'])
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}

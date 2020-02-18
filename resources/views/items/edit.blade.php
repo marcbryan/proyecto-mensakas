@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'items'])
+@extends('layouts.app', ['model'=>'items'])
 @section('title')
  - Editar {{$item_name}}
 @endsection
@@ -72,7 +72,7 @@ form.mt-4{margin:0 auto;width:60vw;}
   </div>
   <div class="form-group">
     <label for="type">Tipo</label>
-    <select class="form-control" name="type">
+    <select class="form-control custom-select" name="type">
       @foreach ($types as $type)
         @if ($type->type == $item->type)
         <option value="{{$type->type}}" selected>{{$type->name}}</option>

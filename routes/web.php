@@ -19,10 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-//Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
-Route::get('/PanelDeControl', function() {
-    return view('PanelDeControl');
-});
+Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
 
 Route::get('superusers/filter', 'SuperuserController@filter');
 Route::resource('superusers', 'SuperuserController');

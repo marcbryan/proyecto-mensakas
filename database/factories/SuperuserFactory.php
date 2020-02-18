@@ -12,7 +12,7 @@ $factory->define(Superuser::class, function (Faker $faker) {
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->email,
-        'password' => hash('sha256', $faker->numerify('####')),
+        'password' => Hash::make($faker->bothify('????####')),
         'created_at' => now(),
         'updated_at' => now()
     ];

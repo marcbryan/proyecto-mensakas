@@ -1,4 +1,4 @@
-@extends('layouts.logged', ['model'=>'menus'])
+@extends('layouts.app', ['model'=>'menus'])
 @section('title')
  - Editar {{$menu_name}}
 @endsection

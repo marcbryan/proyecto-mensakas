@@ -12,5 +12,11 @@ class SuperuserTableSeeder extends Seeder
     public function run()
     {
         factory(App\Superuser::class, 25)->create();
+        factory(App\Superuser::class)->create([
+          'first_name' => 'root',
+          'last_name' => 'toor',
+          'email' => 'root@gmail.com',
+          'password' => Hash::make('root'),
+        ]);
     }
 }
