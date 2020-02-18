@@ -20,8 +20,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
-
 Route::get('/PanelUsers', 'HomeController@PanelUsers');
+
+//Route::get('/newConsumer'), 'HomeController@newConsumer')->name('newConsumer');
+
+Route::get('/newConsumer', function () {
+    return view('newOrder.newConsumer');
+});
+
 Route::get('superusers/filter', 'SuperuserController@filter');
 Route::resource('superusers', 'SuperuserController');
 Route::resource('deliverers', 'DelivererController');
