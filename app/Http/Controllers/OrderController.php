@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Order;
+use App\Consumer;
 
 // TODO: Mostrar errores
 class OrderController extends Controller
@@ -76,6 +77,26 @@ class OrderController extends Controller
         return back()->withSuccess('Pedido actualizado correctamente!');
     }
 
+    /*public function storeAndSaveConsumerID(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'zipcode' => 'required',
+            'phone' => 'required'
+        ]);
+        $request->merge([
+          'created_at' => now(),
+          'updated_at' => now(),
+        ]);
+        Consumer::create($request->all());
+
+        // TODO: Cambiar texto hardcodeado
+        return redirect()->route('newOrder.pedido');
+    }
+*/
     /**
      * Remove the specified resource from storage.
      *
