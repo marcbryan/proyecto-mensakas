@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Superuser;
 
-// TODO: Mostrar errores
 class SuperuserController extends Controller
 {
     /**
@@ -38,8 +37,7 @@ class SuperuserController extends Controller
      */
     public function create()
     {
-        $columns = Superuser::getTableColumns();
-        return view('superusers.create', ['columns'=>$columns]);
+        return view('superusers.create');
     }
 
     /**
@@ -50,20 +48,24 @@ class SuperuserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
+        $validator = Validator::make($request->all(), [
+          'first_name' => 'required|max:25',
+          'last_name' => 'required|max:50',
+          'email' => 'required|email|unique:App\Superuser,email',
+          'password' => 'required',
         ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
         $request->merge([
-          'password' => hash('sha256', $request->password),
+          'password' => Hash::make($request->password),
           'created_at' => now(),
           'updated_at' => now(),
         ]);
         Superuser::create($request->all());
 
-        // TODO: Cambiar texto hardcodeado
         return redirect()->route('superusers.index')
                         ->withSuccess('Superusuario creado correctamente.');
     }
@@ -74,10 +76,7 @@ class SuperuserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $columns = Superuser::getTableColumns();
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -87,8 +86,7 @@ class SuperuserController extends Controller
      */
     public function edit($id)
     {
-        $columns = Superuser::getTableColumns();
-        return view('superusers.edit', ['superuser' => Superuser::findOrFail($id), 'columns' => $columns]);
+        return view('superusers.edit', ['superuser' => Superuser::findOrFail($id)]);
     }
 
     /**
@@ -100,17 +98,22 @@ class SuperuserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
+        $validator = Validator::make($request->all(), [
+          'first_name' => 'required|max:25',
+          'last_name' => 'required|max:50',
+          'email' => 'required|email|unique:App\Superuser,email',
         ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
         $superuser = Superuser::findOrFail($id);
 
-        $oldPass = hash('sha256', $request->old_pass);
+        $oldPass = Hash::make($request->old_pass);
         if ($oldPass == $superuser->password) {
           $request->merge([
-            'password' => hash('sha256', $request->password)
+            'password' => Hash::make($request->password)
           ]);
           $superuser->update($request->except(['old_pass']));
         } else {

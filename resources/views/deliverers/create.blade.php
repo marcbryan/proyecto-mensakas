@@ -1,12 +1,25 @@
 @extends('layouts.app', ['model'=>'deliverers'])
+@section('title', ' - Crear Deliverer')
 @section('styles')
 .row i{font-size:5vw; padding:3px}
-.container{max-width:inherit;}
+.container{max-width:inherit;padding:0;}
 form{padding: 0 15px;}
+div.alert-danger > ul{margin-bottom: 0;}
 @endsection
 @section('content')
+@if ($errors->any())
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <ul>
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
 <form action="{{route('deliverers.store')}}" method="post" class="mt-2">
-  <?php // TODO: Mostrar errores ?>
   @csrf
   <div class="form-group">
     <label for="first_name">Nombre</label>

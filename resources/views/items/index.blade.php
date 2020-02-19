@@ -4,6 +4,7 @@
 .row i{font-size:5vw; padding:3px}
 .container{max-width:100vw; padding:0;}
 div.row.d-flex{margin:0;flex-direction:row;justify-content:space-between;}
+div.alert-danger > ul{margin-bottom: 0;}
 @endsection
 @section('content')
     <script type="text/javascript">

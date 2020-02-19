@@ -1,8 +1,12 @@
 @extends('layouts.app', ['model'=>'superusers'])
+@section('title')
+ - Editar a {{$superuser->first_name}} {{$superuser->last_name}}
+@endsection
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
+div.alert-danger > ul{margin-bottom: 0;}
 @endsection
 
 @component('components.confirm', ['title'=>'Eliminar superusuario', 'text'=>'Estás seguro que quieres eliminar el superusuario de '.$superuser->first_name.' '.$superuser->last_name.'?'])
@@ -53,24 +57,24 @@ form.mt-4{margin:0 auto;width:60vw;}
   @method('PUT')
 
   <div class="form-group">
-    <label for="{{$columns[2]}}">Nombre</label>
-    <input type="text" name="{{$columns[2]}}" class="form-control" value="{{$superuser->first_name}}">
+    <label for="first_name">Nombre</label>
+    <input type="text" name="first_name" class="form-control" value="{{$superuser->first_name}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[3]}}">Apellidos</label>
-    <input type="text" name="{{$columns[3]}}" class="form-control" value="{{$superuser->last_name}}">
+    <label for="last_name">Apellidos</label>
+    <input type="text" name="last_name" class="form-control" value="{{$superuser->last_name}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[4]}}">Correo electrónico</label>
-    <input type="text" name="{{$columns[4]}}" class="form-control" value="{{$superuser->email}}">
+    <label for="email">Correo electrónico</label>
+    <input type="text" name="email" class="form-control" value="{{$superuser->email}}">
   </div>
   <div class="form-group">
     <label for="old_pass">Antigua Contraseña</label>
     <input type="password" name="old_pass" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[5]}}">Nueva Contraseña</label>
-    <input type="password" name="{{$columns[5]}}" class="form-control">
+    <label for="password">Nueva Contraseña</label>
+    <input type="password" name="password" class="form-control">
   </div>
   <input type="submit" class="btn btn-primary" value="Actualizar">
 </form>

@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Menu extends Model
 {
@@ -11,8 +10,7 @@ class Menu extends Model
     protected $guarded = array();
 
     public static function getTableColumns() {
-      $columns = DB::select(DB::raw('SHOW COLUMNS FROM menus'));
-      return array_column($columns, 'Field');
+      return ['id' => 'ID', 'name' => 'Nombre del menú', 'business_id' => 'Nombre del negocio', 'price' => 'Precio', 'status' => 'Estado'];
     }
 
     public function names()
@@ -28,5 +26,9 @@ class Menu extends Model
     public function business()
     {
       return $this->belongsTo('App\Business');
+    }
+
+    public static function getFilterKeys() {
+      return ['menu_name' => 'Nombre del menú', 'business_name' => 'Nombre del negocio', 'price' => 'Precio'];
     }
 }

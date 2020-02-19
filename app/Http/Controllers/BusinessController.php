@@ -94,7 +94,7 @@ class BusinessController extends Controller
             'name' => 'required|max:40',
             'address' => 'required|max:200',
             'phone' => 'required|integer|digits:9',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:App\Business,email',
             'zipcode' => 'required|integer|digits:5',
         ]);
         if ($validator->fails()) {

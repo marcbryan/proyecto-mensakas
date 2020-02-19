@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Consumer;
 
-// TODO: Mostrar errores
 class ConsumerController extends Controller
 {
     /**
@@ -39,21 +38,25 @@ class ConsumerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
-            'zipcode' => 'required',
-            'phone' => 'required'
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|max:25',
+            'last_name' => 'required|max:50',
+            'email' => 'required|email|unique:App\Consumer,email',
+            'address' => 'required|max:255',
+            'zipcode' => 'required|integer|digits:5',
+            'phone' => 'required|integer|digits:9'
         ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
         $request->merge([
           'created_at' => now(),
           'updated_at' => now(),
         ]);
         Consumer::create($request->all());
 
-        // TODO: Cambiar texto hardcodeado
         return redirect()->route('consumers.index')
                         ->withSuccess('Cliente creado correctamente.');
     }
@@ -64,10 +67,7 @@ class ConsumerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $columns = Consumer::getTableColumns();
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -89,14 +89,19 @@ class ConsumerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
-            'zipcode' => 'required',
-            'phone' => 'required'
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|max:25',
+            'last_name' => 'required|max:50',
+            'email' => 'required|email|unique:App\Consumer,email',
+            'address' => 'required|max:255',
+            'zipcode' => 'required|integer|digits:5',
+            'phone' => 'required|integer|digits:9'
         ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
         $consumer = Consumer::findOrFail($id);
 
         $consumer->update($request->all());

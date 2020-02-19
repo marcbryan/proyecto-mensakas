@@ -1,8 +1,12 @@
 @extends('layouts.app', ['model'=>'deliverers'])
+@section('title')
+ - Editar a {{$deliverer->first_name}} {{$deliverer->last_name}}
+@endsection
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
+div.alert-danger > ul{margin-bottom: 0;}
 @endsection
 
 @component('components.confirm', ['title'=>'Eliminar deliverer', 'text'=>'Estás seguro que quieres eliminar el deliverer '.$deliverer->first_name.' '.$deliverer->last_name.'?'])

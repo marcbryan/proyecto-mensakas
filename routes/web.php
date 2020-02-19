@@ -34,6 +34,8 @@ Route::get('/businesses/filter', 'BusinessController@filter');
 Route::resource('businesses', 'BusinessController');
 
 Route::resource('orders', 'OrderController');
+
+Route::get('/menus/filter', 'MenuController@filter');
 Route::resource('menus', 'MenuController');
 
 Route::get('/items/filter', 'ItemController@filter');

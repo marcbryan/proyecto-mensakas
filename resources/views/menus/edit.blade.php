@@ -6,6 +6,7 @@
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
+div.alert-danger > ul{margin-bottom: 0;}
 @endsection
 
 @component('components.confirm', ['title'=>'Eliminar menú', 'text'=>'Estás seguro que quieres eliminar "'.$menu_name.'"?'])
@@ -58,7 +59,10 @@ form.mt-4{margin:0 auto;width:60vw;}
     <label for="menu_name">Nombre del menú</label>
     <input type="text" name="menu_name" class="form-control" value="{{$menu_name}}">
   </div>
-
+  <div class="form-group">
+    <label for="price">Precio</label>
+    <input type="number" min="0.01" step="0.01" name="price" value="{{$menu->price}}" class="form-control" placeholder="Ej: 1.99">
+  </div>
   <div class="form-group">
     <div class="custom-control custom-checkbox mr-sm-2">
       @if ($menu->status == 1)

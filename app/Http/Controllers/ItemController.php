@@ -10,7 +10,6 @@ use App\Item_Name;
 use App\ItemType_Name;
 use App\Business;
 
-// TODO: Mostrar si hay errores al realizar una acción
 class ItemController extends Controller
 {
     private $lang = 'ES';
@@ -69,7 +68,7 @@ class ItemController extends Controller
         ]);
 
         return redirect()->route('items.index')
-                        ->with('success', 'Menú creado correctamente.');
+                        ->with('success', 'Producto creado correctamente.');
     }
 
     /**

@@ -6,6 +6,7 @@
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
+div.alert-danger > ul{margin-bottom: 0;}
 @endsection
 
 @component('components.confirm', ['title'=>'Eliminar producto', 'text'=>'Estás seguro que quieres eliminar "'.$item_name.'"?'])

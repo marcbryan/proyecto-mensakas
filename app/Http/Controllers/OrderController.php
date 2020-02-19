@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Order;
+use App\Deliverer;
 
 // TODO: Mostrar errores
 class OrderController extends Controller
@@ -17,7 +19,7 @@ class OrderController extends Controller
     {
         $orders = Order::all();
         $columns = Order::getTableColumns();
-        return view('orders.index', ['orders'=>$orders, 'columns'=>$columns]);
+        return view('orders.index', ['orders'=>$orders, 'columns'=>$columns, 'keys'=>Order::getFilterKeys()]);
     }
 
     /**
@@ -41,10 +43,7 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $columns = Order::getTableColumns();
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -54,8 +53,9 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
+        $deliverers = Deliverer::all();
         $columns = Order::getTableColumns();
-        return view('orders.edit', ['order' => Order::findOrFail($id), 'columns' => $columns]);
+        return view('orders.edit', ['order' => Order::findOrFail($id), 'deliverers' => $deliverers, 'columns' => $columns]);
     }
 
     /**
@@ -67,9 +67,15 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required',
+        $validator = Validator::make($request->all(),[
+            'deliverer_id' => 'integer',
+            'status' => 'required|integer'
         ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
         $order = Order::findOrFail($id);
         $order->update($request->all());
         $order->touch();
@@ -83,4 +89,24 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {}
+
+    // TODO: Filtro orders
+    public function filter(Request $request) {
+      $validator = Validator::make($request->all(),[
+          'column' => 'required',
+          'value' => 'required',
+      ]);
+      if ($validator->fails()) {
+        return back()
+                    ->withErrors($validator)
+                    ->withInput();
+      }
+      if ($request->column == 'business_name') {
+        //$orders =
+      } else {
+        //$orders = Order::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
+      }
+      $columns = Order::getTableColumns();
+      return view('orders.index', ['orders'=>$orders, 'columns'=>$columns, 'keys'=>Order::getFilterKeys()]);
+    }
 }

@@ -1,23 +1,14 @@
-@extends('layouts.app', ['model'=>'order'])
+@extends('layouts.app', ['model'=>'orders'])
+@section('title')
+ - Editar Pedido #{{$order->id}}
+@endsection
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
+div.alert-danger > ul{margin-bottom: 0;}
 @endsection
 @section('content')
-
-<script type="text/javascript">
-  $(function() {
-    $('form#delete').submit(function() {
-      var resp = confirm("Estás seguro que quieres eliminar este Business?");
-      if (resp) {
-        return true;
-      }
-      return false;
-    });
-  });
-</script>
-
 @if ($errors->any())
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <ul class="m-0">
@@ -40,21 +31,26 @@ form.mt-4{margin:0 auto;width:60vw;}
     </div>
 @endif
 
-<div class="row m-2 d-flex justify-content-end">
-  <form action="{{ route('orders.destroy',$order->id) }}" id="delete" method="POST">
-    @csrf
-    @method('DELETE')
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-  </form>
-</div>
-
 <form action="{{ route('orders.update',$order->id) }}" method="post" class="mt-4">
   @csrf
   @method('PUT')
-
+  @if ($order->deliverer_id == null)
   <div class="form-group">
-    <label for="{{$columns[3]}}">Estado</label>
-    <input type="text" name="{{$columns[3]}}" class="form-control" value="{{$order->status}}">
+    <label for="deliverer_id">Deliverer de este pedido</label>
+    <select class="form-control custom-select" name="deliverer_id">
+      @foreach ($deliverers as $deliverer)
+        @if($order->deliverer_id == $deliverer->id)
+        <option value="{{$deliverer->id}}" selected>{{$deliverer->first_name}} {{$deliverer->last_name}}</option>
+        @else
+        <option value="{{$deliverer->id}}">{{$deliverer->first_name}} {{$deliverer->last_name}}</option>
+        @endif
+      @endforeach
+    </select>
+  </div>
+  @endif
+  <div class="form-group">
+    <label for="status">Estado</label>
+    <input type="text" name="status" class="form-control" value="{{$order->status}}">
   </div>
   <input type="submit" class="btn btn-primary" value="Actualizar">
 </form>
