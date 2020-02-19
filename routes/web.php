@@ -30,7 +30,9 @@ Route::resource('deliverers', 'DelivererController');
 Route::get('/consumers/filter', 'ConsumerController@filter');
 Route::resource('consumers', 'ConsumerController');
 
+Route::get('/businesses/filter', 'BusinessController@filter');
 Route::resource('businesses', 'BusinessController');
+
 Route::resource('orders', 'OrderController');
 Route::resource('menus', 'MenuController');
 

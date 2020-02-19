@@ -2,7 +2,7 @@
 @section('title', ' - Crear Producto')
 @section('styles')
 .row i{font-size:5vw; margin-bottom:3px}
-.container{max-width:inherit;}
+.container{max-width:inherit;padding:0;}
 form{padding: 0 15px;}
 div.alert-danger > ul{margin-bottom: 0;}
 @endsection
@@ -42,8 +42,8 @@ div.alert-danger > ul{margin-bottom: 0;}
     <input type="text" name="name" class="form-control">
   </div>
   <div class="form-group">
-    <label for="{{$columns[1]}}">Negocio que tendrá este producto: </label>
-    <select class="form-control custom-select" name="{{$columns[1]}}">
+    <label for="business_id">Negocio que tendrá este producto: </label>
+    <select class="form-control custom-select" name="business_id">
       @foreach ($businesses as $business)
         <option value="{{$business->id}}">{{$business->name}}</option>
       @endforeach

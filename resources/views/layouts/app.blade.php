@@ -108,6 +108,7 @@
         </nav>
 
         <main class="container">
+            @yield('confirm')
             @yield('content')
         </main>
 

@@ -1,4 +1,7 @@
 @extends('layouts.app', ['model'=>'businesses'])
+@section('title')
+ - Editar {{$business->name}}
+@endsection
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
@@ -53,24 +56,34 @@ form.mt-4{margin:0 auto;width:60vw;}
   @method('PUT')
 
   <div class="form-group">
-    <label for="{{$columns[1]}}">Nombre</label>
-    <input type="text" name="{{$columns[1]}}" class="form-control" value="{{$business->name}}">
+    <label for="name">Nombre del negocio</label>
+    <input type="text" name="name" class="form-control" value="{{$business->name}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[2]}}">Dirección</label>
-    <input type="text" name="{{$columns[2]}}" class="form-control" value="{{$business->address}}">
+    <label for="email">Correo electrónico</label>
+    <input type="text" name="email" class="form-control" value="{{$business->email}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[6]}}">Teléfono</label>
-    <input type="text" name="{{$columns[6]}}" class="form-control" value="{{$business->phone}}">
+    <label for="address">Dirección</label>
+    <input type="text" name="address" class="form-control" value="{{$business->address}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[7]}}">Correo electrónico</label>
-    <input type="text" name="{{$columns[7]}}" class="form-control" value="{{$business->email}}">
+    <label for="zipcode">Código postal</label>
+    <input type="text" name="zipcode" class="form-control" value="{{$business->zipcode}}">
   </div>
   <div class="form-group">
-    <label for="{{$columns[8]}}">Código postal</label>
-    <input type="text" name="{{$columns[8]}}" class="form-control" value="{{$business->zipcode}}">
+    <label for="phone">Teléfono</label>
+    <input type="text" name="phone" class="form-control" value="{{$business->phone}}">
+  </div>
+  <div class="form-group">
+    <div class="custom-control custom-checkbox mr-sm-2">
+      @if ($business->status == 1)
+      <input type="checkbox" class="custom-control-input" name="status" id="status" checked>
+      @else
+      <input type="checkbox" class="custom-control-input" name="status" id="status">
+      @endif
+      <label class="custom-control-label" for="status">El negocio está disponible?</label>
+    </div>
   </div>
   <input type="submit" class="btn btn-primary" value="Actualizar">
 </form>

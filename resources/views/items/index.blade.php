@@ -8,7 +8,6 @@ div.row.d-flex{margin:0;flex-direction:row;justify-content:space-between;}
 @section('content')
     <script type="text/javascript">
       $(function() {
-        $('.nav-item').remove();
         $('.clickable-row').click(function() {
           window.location = $(this).data("href");
         });
@@ -18,6 +17,19 @@ div.row.d-flex{margin:0;flex-direction:row;justify-content:space-between;}
     @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
       {{ session('success') }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    @endif
+
+    @if ($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <ul class="m-0">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+      </ul>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -34,14 +46,14 @@ div.row.d-flex{margin:0;flex-direction:row;justify-content:space-between;}
     <div class="table-responsive-sm">
       <table class="table table-hover">
         <tr>
-          @foreach ($columns as $column)
-            <th>{{ $column }}</th>
+          @foreach ($columns as $column=>$value)
+            <th>{{ $value }}</th>
           @endforeach
         </tr>
 
         @foreach ($items as $item)
         <tr class='clickable-row' data-href="{{ route('items.edit',$item->id) }}">
-          @foreach ($columns as $column)
+          @foreach ($columns as $column=>$value)
             @if ($loop->index == 1)
             <td>{{ $item->nameIn($lang) }}</td>
             <td>{{ $item->business->name }}</td>

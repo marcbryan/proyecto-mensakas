@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Business extends Model
 {
@@ -11,8 +10,11 @@ class Business extends Model
     protected $guarded = array();
 
     public static function getTableColumns() {
-      $columns = DB::select(DB::raw('SHOW COLUMNS FROM businesses'));
-      return array_column($columns, 'Field');
+      return ['id' => 'ID', 'name' => 'Nombre', 'email' => 'Correo electrónico', 'address' => 'Dirección', 'zipcode' => 'Código postal', 'phone' => 'Teléfono', 'status' => 'Estado'];
+    }
+
+    public static function getFilterKeys() {
+      return ['name' => 'Nombre', 'email' => 'Correo electrónico', 'zipcode' => 'Código postal', 'phone' => 'Teléfono'];
     }
 
     public function menus() {

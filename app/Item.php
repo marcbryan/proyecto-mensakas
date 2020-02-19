@@ -11,8 +11,15 @@ class Item extends Model
     protected $guarded = array();
 
     public static function getTableColumns() {
-      $columns = DB::select(DB::raw('SHOW COLUMNS FROM items'));
-      return array_column($columns, 'Field');
+      $cols = DB::select(DB::raw('SHOW COLUMNS FROM items'));
+      $cols = array_column($cols, 'Field');
+      array_splice($cols, 2, 0, 'name');
+      $translations = ['ID', 'Nombre del producto', 'Nombre del negocio', 'Precio', 'Estado', 'Tipo', 'Tiene extras?', 'Enlace imagen'];
+      $columns = array();
+      foreach ($cols as $i=>$col) {
+        $columns[$col] = $translations[$i];
+      }
+      return $columns;
     }
 
     public function names()

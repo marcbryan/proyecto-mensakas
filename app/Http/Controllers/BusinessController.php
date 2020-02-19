@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Business;
 
-// TODO: Mostrar errores
 class BusinessController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class BusinessController extends Controller
     {
         $businesses = Business::all();
         $columns = Business::getTableColumns();
-        return view('businesses.index', ['businesses'=>$businesses, 'columns'=>$columns]);
+        return view('businesses.index', ['businesses'=>$businesses, 'columns'=>$columns, 'keys'=>Business::getFilterKeys()]);
     }
 
     /**
@@ -39,20 +39,24 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
-            'email' => 'required',
-            'zipcode' => 'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:40',
+            'address' => 'required|max:200',
+            'phone' => 'required|integer|digits:9',
+            'email' => 'required|email',
+            'zipcode' => 'required|integer|digits:5',
         ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
         $request->merge([
           'created_at' => now(),
           'updated_at' => now(),
         ]);
         Business::create($request->all());
 
-        // TODO: Cambiar texto hardcodeado
         return redirect()->route('businesses.index')
                         ->withSuccess('Negocio creado correctamente.');
     }
@@ -63,10 +67,7 @@ class BusinessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $columns = Business::getTableColumns();
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -89,13 +90,23 @@ class BusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'address' => 'required',
-            'phone' => 'required',
-            'email' => 'required',
-            'zipcode' => 'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:40',
+            'address' => 'required|max:200',
+            'phone' => 'required|integer|digits:9',
+            'email' => 'required|email',
+            'zipcode' => 'required|integer|digits:5',
         ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
+        if ($request->has('status')) {
+          $request->merge(['status' => 1]);
+        } else {
+          $request->merge(['status' => 0]);
+        }
         $business = Business::findOrFail($id);
 
         $business->update($request->all());
@@ -115,5 +126,20 @@ class BusinessController extends Controller
         $business->delete();
         return redirect()->route('businesses.index')
                         ->withSuccess('Negocio eliminado correctamente!');
+    }
+
+    public function filter(Request $request) {
+      $validator = Validator::make($request->all(),[
+          'column' => 'required',
+          'value' => 'required',
+      ]);
+      if ($validator->fails()) {
+        return back()
+                    ->withErrors($validator)
+                    ->withInput();
+      }
+      $businesses = Business::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
+      $columns = Business::getTableColumns();
+      return view('businesses.index', ['businesses'=>$businesses, 'columns'=>$columns, 'keys'=>Business::getFilterKeys()]);
     }
 }

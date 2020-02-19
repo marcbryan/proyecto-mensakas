@@ -23,8 +23,6 @@ class ItemController extends Controller
     {
         $items = Item::all();
         $columns = Item::getTableColumns();
-        $columns[1] = 'Nombre del producto';
-        array_splice($columns, 2, 0, 'Nombre del negocio');
         return view('items.index', ['items'=>$items, 'columns'=>$columns, 'lang'=>$this->lang, 'keys'=>Item::getFilterKeys()]);
     }
 
@@ -160,16 +158,19 @@ class ItemController extends Controller
           $items = Item::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
         }
         else if ($request->column == 'product_name') {
-          // TODO: Revisar esta parte
           $names = Item_Name::where('lang', $this->lang)->where('name', 'LIKE', '%'.$request->value.'%')->get();
           $items = new Collection();
           foreach ($names as $name) {
-            $found = $name->item();//Item::where($request->column, $name->item_id)->get();
-            $items = $items->merge($found);
+            $items->push($name->item);
           }
         }
         else if ($request->column == 'business_name') {
-          // TODO: Filtro negocios
+          $businesses = Business::where('name', 'LIKE', '%'.$request->value.'%')->get();
+          $items = new Collection();
+          foreach ($businesses as $business) {
+            $found = Item::where('business_id', $business->id)->get();
+            $items = $items->merge($found);
+          }
         }
         else if ($request->column == 'type') {
           $types = ItemType_Name::where('lang', $this->lang)->where('name', 'LIKE', '%'.$request->value.'%')->get();
@@ -180,8 +181,6 @@ class ItemController extends Controller
           }
         }
         $columns = Item::getTableColumns();
-        $columns[1] = 'Nombre del producto';
-        array_splice($columns, 2, 0, 'Nombre del negocio');
         return view('items.index', ['items'=>$items, 'columns'=>$columns, 'lang'=>$this->lang, 'keys'=>Item::getFilterKeys()]);
     }
 }
