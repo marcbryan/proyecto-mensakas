@@ -36,7 +36,10 @@
     <input type="submit" class="btn btn-primary" value="Pedir de este restaurante">
   </form>
   @else
-  <p>No hay restaurantes en tu zona :(</p>
+      <div class="alert alert-danger mt-5" role="alert">
+          <h4 class="alert-heading">UPS!</h4>
+          <p>Lamentablemente no hay restaurantes que dispongan de nuestro servicio cerca tuyo.</p>
+        </div>
   @endif
 @else
   @php header("Location: /"); @endphp
