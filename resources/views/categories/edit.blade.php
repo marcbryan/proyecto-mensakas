@@ -1,11 +1,14 @@
-@extends('layouts.app', ['model'=>'superusers'])
+@extends('layouts.app', ['model'=>'categories'])
+@section('title')
+ - Editar {{$category_name}}
+@endsection
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
 @endsection
 
-@component('components.confirm', ['title'=>'Eliminar superusuario', 'text'=>'Estás seguro que quieres eliminar el superusuario de '.$superuser->first_name.' '.$superuser->last_name.'?'])
+@component('components.confirm', ['title'=>'Eliminar categoría', 'text'=>'Estás seguro que quieres eliminar "'.$category_name.'"?'])
 @endcomponent
 
 @section('content')
@@ -41,36 +44,38 @@ form.mt-4{margin:0 auto;width:60vw;}
 @endif
 
 <div class="row m-2 d-flex justify-content-end">
-  <form action="{{ route('superusers.destroy',$superuser->id) }}" id="delete" method="POST">
+  <form action="{{ route('categories.destroy',$category->id) }}" id="delete" method="POST">
     @csrf
     @method('DELETE')
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal">Eliminar</button>
   </form>
 </div>
 
-<form action="{{ route('superusers.update',$superuser->id) }}" method="post" class="mt-4">
+<form action="{{ route('categories.update',$category->id) }}" method="post" class="mt-4">
   @csrf
   @method('PUT')
+  <div class="form-group">
+    <label for="category_name">Nombre de la categoría</label>
+    <input type="text" name="category_name" class="form-control" value="{{$category_name}}">
+  </div>
+  <div class="form-group">
+    <label for="icon">Enlace de la imagen de la categoría</label>
+    <input type="text" name="icon" class="form-control" value="{{$category->icon}}">
+  </div>
+  <div class="form-group">
+    <label for="color">Color para la categoría</label>
+    <input type="color" name="color" class="form-control" value="{{$category->color}}">
+  </div>
 
   <div class="form-group">
-    <label for="{{$columns[2]}}">Nombre</label>
-    <input type="text" name="{{$columns[2]}}" class="form-control" value="{{$superuser->first_name}}">
-  </div>
-  <div class="form-group">
-    <label for="{{$columns[3]}}">Apellidos</label>
-    <input type="text" name="{{$columns[3]}}" class="form-control" value="{{$superuser->last_name}}">
-  </div>
-  <div class="form-group">
-    <label for="{{$columns[4]}}">Correo electrónico</label>
-    <input type="text" name="{{$columns[4]}}" class="form-control" value="{{$superuser->email}}">
-  </div>
-  <div class="form-group">
-    <label for="old_pass">Antigua Contraseña</label>
-    <input type="password" name="old_pass" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="{{$columns[5]}}">Nueva Contraseña</label>
-    <input type="password" name="{{$columns[5]}}" class="form-control">
+    <div class="custom-control custom-checkbox mr-sm-2">
+      @if ($category->status == 1)
+      <input type="checkbox" class="custom-control-input" name="status" id="status" checked>
+      @else
+      <input type="checkbox" class="custom-control-input" name="status" id="status">
+      @endif
+      <label class="custom-control-label" for="status">La categoría está disponible?</label>
+    </div>
   </div>
   <input type="submit" class="btn btn-primary" value="Actualizar">
 </form>

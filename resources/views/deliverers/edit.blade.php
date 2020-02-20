@@ -1,19 +1,19 @@
-@extends('layouts.logged', ['model'=>'deliverers'])
+@extends('layouts.app', ['model'=>'deliverers'])
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:inherit;padding:0;}
 form.mt-4{margin:0 auto;width:60vw;}
 @endsection
+
+@component('components.confirm', ['title'=>'Eliminar deliverer', 'text'=>'Estás seguro que quieres eliminar el deliverer '.$deliverer->first_name.' '.$deliverer->last_name.'?'])
+@endcomponent
+
 @section('content')
 
 <script type="text/javascript">
   $(function() {
-    $('form#delete').submit(function() {
-      var resp = confirm("Estás seguro que quieres eliminar este Deliverer?");
-      if (resp) {
-        return true;
-      }
-      return false;
+    $('#confirmModal button#confirmButton').click(function() {
+      $('form#delete').submit();
     });
   });
 </script>
@@ -31,9 +31,9 @@ form.mt-4{margin:0 auto;width:60vw;}
     </div>
 @endif
 
-@if (session('status'))
+@if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('status') }}
+        {{ session('success') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -44,7 +44,7 @@ form.mt-4{margin:0 auto;width:60vw;}
   <form action="{{ route('deliverers.destroy',$deliverer->id) }}" id="delete" method="POST">
     @csrf
     @method('DELETE')
-    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmModal">Eliminar</button>
   </form>
 </div>
 

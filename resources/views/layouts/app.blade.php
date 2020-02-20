@@ -39,12 +39,14 @@
         footer a{color:white;}
         footer a:hover, .nav-link:hover{ text-shadow: 2px 2px 5px white; color:white;}
         @yield('styles')
+        @yield('confirm-styles')
+        @yield('filter-styles')
     </style>
 </head>
 <body>
-    
+
         <nav class="navbar navbar-expand-md" style="background-color:#622c84;">
-          
+
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img height="45" alt="" src="{{URL('/images/branding/mensa6.png')}}">
                 </a>
@@ -71,6 +73,11 @@
                                 </li>-->
                             @endif
                         @else
+                            @if (isset($model))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route($model.'.index') }}">Volver</a>
+                            </li>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -87,7 +94,7 @@
                                         {{ __('Logout') }} <i class="fas fa-sign-out-alt"></i>
                                     </a>
 
-                                    
+
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -97,7 +104,7 @@
                         @endguest
                     </ul>
                 </div>
-            
+
         </nav>
 
         <main class="container">
@@ -110,7 +117,7 @@
             <a href="https://twitter.com/MensakasApp"><i class="fab fa-twitter"></i></a>
             <a href="https://es.linkedin.com/company/mensakas"><i class="fab fa-linkedin"></i></a>
         </footer>
-   
+
 </body>
 @yield('scripts')
 </html>
