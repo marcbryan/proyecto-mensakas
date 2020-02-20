@@ -44,7 +44,6 @@ class NewOrderController extends Controller
       return view('newOrder.restaurante');
     }
 
-    // TODO: Incompleto
     public function restSelected(Request $request) {
       $validator = Validator::make($request->all(), [
           'business_id' => 'required'
@@ -59,7 +58,6 @@ class NewOrderController extends Controller
       return redirect()->route('carrito');
     }
 
-    // TODO: Devolver view pedido
     public function carrito() {
       return view('newOrder.shopping_cart');
     }

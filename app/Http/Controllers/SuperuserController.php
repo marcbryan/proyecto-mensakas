@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use App\Superuser;
 
 class SuperuserController extends Controller
@@ -101,7 +102,8 @@ class SuperuserController extends Controller
         $validator = Validator::make($request->all(), [
           'first_name' => 'required|max:25',
           'last_name' => 'required|max:50',
-          'email' => 'required|email|unique:App\Superuser,email',
+          'email' => 'required|email',
+          'old_pass' => 'required'
         ]);
         if ($validator->fails()) {
           return back()

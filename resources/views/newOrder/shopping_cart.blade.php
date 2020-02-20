@@ -7,14 +7,14 @@ body::after{height: 42px;}
 .summ-container > div.total{border-top: 1px solid #E1E8EE;text-align:end;border-bottom: 1px solid #E1E8EE;text-align:end;}
 .summ{display:flex;flex-direction:column;min-height: 72px;}
 html, body {font-family: 'Roboto', sans-serif;}
-.shopping-cart {width: 750px;background: #FFFFFF;box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);display: flex;flex-direction: column;}
+.shopping-cart {width: 750px;background: #FFFFFF;box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);display: flex;flex-direction: column;height:fit-content;height:-moz-fit-content;}
 .title {height: 60px;border-bottom: 1px solid #E1E8EE;padding: 20px 30px;color: #5E6977;font-size: 18px;font-weight: 400;}
 .item {padding: 20px 30px;height: 120px;display: flex;}
 div.item.item-border-top {border-top:1px solid #E1E8EE}
 .buttons {position: relative;padding-top: 30px;margin-right: 60px;}
 .delete-btn,.like-btn {display: inline-block;Cursor: pointer;}
 .delete-btn {width: 18px;height: 17px;background: url('/images/delete_icn.svg') no-repeat center;}
-.like-btn {position: absolute;top: 9px;left: 15px;background: url('/images/twitter-heart.png');width: 60px;height: 60px;background-size: 2900%;background-repeat: no-repeat;}
+.like-btn {position: absolute;top: 9px;background: url('/images/twitter-heart.png');width: 60px;height: 60px;background-size: 2900%;background-repeat: no-repeat;}
 .is-active {animation-name: animate;animation-duration: .8s;animation-iteration-count: 1;animation-timing-function: steps(28);animation-fill-mode: forwards;}
 @keyframes animate {0% { background-position: left; } 50% { background-position: right; } 100% { background-position: right; }}
 .image {margin-right:50px;margin-top:auto;margin-bottom:auto;}
@@ -102,7 +102,8 @@ button:focus,input:focus {outline:0;}
           price: $("span#total").text()
         }
         var form = $('form#sendOrder');
-        form.find('> input[name="json"]').text(JSON.stringify(order));
+        form.find('> input[name="json"]').attr('value', JSON.stringify(order));
+        console.log(JSON.stringify(order));
         //form.submit();
       }
     });
@@ -152,7 +153,6 @@ button:focus,input:focus {outline:0;}
     <div class="item item-border-top" item-id="{{$product->id}}" item-name="{{$product->nameIn('ES')}}" price="{{$product->price}}">
     @endif
       <div class="buttons">
-        <span class="delete-btn"></span>
         <span class="like-btn"></span>
       </div>
       <div class="image">

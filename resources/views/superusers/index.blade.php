@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', ' - Lista Superusuarios')
 @section('styles')
 .row i{font-size:5vw; padding:3px}
 .container{max-width:100vw; padding:0;}
