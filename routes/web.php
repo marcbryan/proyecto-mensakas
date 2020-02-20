@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
-Route::get('/PanelUsers', 'HomeController@PanelUsers');
+Route::get('/PanelUsers', 'HomeController@PanelUsers')->name('PanelUsers');
 
 
 Route::get('/superusers/filter', 'SuperuserController@filter');

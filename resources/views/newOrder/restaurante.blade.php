@@ -1,4 +1,13 @@
 @extends('layouts.app')
+
+@section('scripts')
+<script type="text/javascript">
+	$(function() {
+    $('.nav-link').remove();
+	});
+</script>
+@endsection
+
 @section('content')
 @if ($errors->any())
 <div class="alert alert-danger alert-dismissible fade show" role="alert">

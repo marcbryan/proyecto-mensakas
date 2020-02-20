@@ -19,7 +19,7 @@ form{padding: 0 15px;}
 @endif
 
 <div class="col-6 mx-auto mt-3">
-<form action="{{url('newConsumer')}}" method="post">
+<form action="{{url('saveConsumer')}}" method="post">
   @csrf
   @method('PUT')
   <div class="form-group">
