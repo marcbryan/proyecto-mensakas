@@ -176,7 +176,10 @@ button:focus,input:focus {outline:0;}
     </div>
     @endforeach
   @else
-  <p>No hay productos que puedas añadir al carrito :(</p>
+  <div class="alert alert-danger mt-5" role="alert">
+			  <h4 class="alert-heading">UPS!</h4>
+			  <p>Lamentablemente no hay productos añadidos a este restaurante.</p>
+			</div>
   @endif
 </div>
 <div class="summ-container">
