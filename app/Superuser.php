@@ -40,7 +40,7 @@ class Superuser extends Authenticatable
     ];
 
     public static function getTableColumns() {
-      return ['id', 'first_name', 'last_name', 'email', 'created_at', 'updated_at'];
+      return ['id'=>'ID', 'first_name'=>'Nombre', 'last_name'=>"Apellidos", 'email'=>'Correo electrónico', 'created_at'=>'Fecha creación', 'updated_at'=>'Fecha modificación'];
     }
 
     public static function getFilterKeys() {

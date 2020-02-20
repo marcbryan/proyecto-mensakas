@@ -45,14 +45,14 @@ div.alert-danger > ul{margin-bottom: 0;}
     <div class="table-responsive-sm">
       <table class="table table-hover">
         <tr>
-          @foreach ($columns as $column)
-          <th>{{ $column }}</th>
+          @foreach ($columns as $column=>$value)
+          <th>{{ $value }}</th>
           @endforeach
         </tr>
 
         @foreach ($superusers as $superuser)
         <tr class='clickable-row' data-href="{{ route('superusers.edit',$superuser->id) }}">
-          @foreach ($columns as $column)
+          @foreach ($columns as $column=>$value)
           <td>{{ $superuser->$column }}</td>
           @endforeach
         </tr>

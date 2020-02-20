@@ -92,7 +92,7 @@ class CreateMensakasDatabase extends Migration
             $table->time('start');
             $table->time('end');
 
-            $table->foreign('deliverer_id')->references('id')->on('deliverers');
+            $table->foreign('deliverer_id')->references('id')->on('deliverers')->onDelete('cascade');
         });
 
         // 8. Deliverer Location
@@ -104,7 +104,7 @@ class CreateMensakasDatabase extends Migration
           $table->decimal('precision', 6, 3);
           $table->unsignedBigInteger('deliverer_id');
 
-          $table->foreign('deliverer_id')->references('id')->on('deliverers');
+          $table->foreign('deliverer_id')->references('id')->on('deliverers')->onDelete('cascade');
           $table->timestamp('created_at', 0)->nullable();
           $table->timestamp('updated_at', 0)->nullable();
 
@@ -185,9 +185,7 @@ class CreateMensakasDatabase extends Migration
             $table->json('json');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('consumers');
-            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
-            $table->foreign('deliverer_id')->references('id')->on('deliverers');
+            $table->foreign('user_id')->references('id')->on('consumers')->onDelete('cascade');
         });
 
         // 16. Order Historical
@@ -201,9 +199,7 @@ class CreateMensakasDatabase extends Migration
             $table->timestamp('created_at', 0)->nullable();
             $table->timestamp('updated_at', 0)->nullable();
 
-            $table->foreign('user_id')->references('id')->on('consumers');
-            $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
-            $table->foreign('deliverer_id')->references('id')->on('deliverers');
+            $table->foreign('user_id')->references('id')->on('consumers')->onDelete('cascade');
         });
 
         // 17. Order Message
@@ -214,8 +210,7 @@ class CreateMensakasDatabase extends Migration
             $table->dateTime('date');
             $table->text('text');
 
-            $table->foreign('order_id')->references('id')->on('order_historical');
-            $table->foreign('deliverer_id')->references('id')->on('deliverers');
+            $table->foreign('order_id')->references('id')->on('order_historical')->onDelete('cascade');
         });
 
         // 18. Payments
@@ -277,8 +272,8 @@ class CreateMensakasDatabase extends Migration
           $table->tinyInteger('has_extras')->default(0);
           $table->string('image_url')->nullable();
 
-          $table->foreign('business_id')->references('id')->on('businesses');
-          $table->foreign('type')->references('type')->on('itemtype_names');
+          $table->foreign('business_id')->references('id')->on('businesses')->onDelete('cascade');
+          $table->foreign('type')->references('type')->on('itemtype_names')->onDelete('cascade');
         });
 
         // 24. Extras

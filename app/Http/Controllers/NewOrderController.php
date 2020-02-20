@@ -19,7 +19,7 @@ class NewOrderController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:25',
             'last_name' => 'required|max:50',
-            'email' => 'required|email|unique:App\Consumer,email',
+            'email' => 'required|email',
             'address' => 'required|max:255',
             'zipcode' => 'required|digits:5',
             'phone' => 'required|integer|digits:9'
