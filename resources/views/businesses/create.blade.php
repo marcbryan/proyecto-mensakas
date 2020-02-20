@@ -5,6 +5,7 @@
 .container{max-width:inherit;padding:0}
 form{padding: 0 15px;}
 div.alert-danger > ul{margin-bottom: 0;}
+div.form-group > div.justify-content-between{width:60vw;margin:0 auto;margin-left:0;}
 @endsection
 
 @section('content')
@@ -42,6 +43,27 @@ div.alert-danger > ul{margin-bottom: 0;}
   <div class="form-group">
     <label for="phone">Teléfono</label>
     <input type="text" name="phone" class="form-control">
+  </div>
+  <div class="form-group">
+    <label>Horario</label>
+    <div class="d-flex flex-wrap justify-content-between">
+      @foreach ($days as $day)
+      <div class="weekday-selector custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" name="weekday-{{$loop->iteration}}" id="weekday-{{$loop->iteration}}">
+        <label class="custom-control-label" for="weekday-{{$loop->iteration}}">{{$day}}</label>
+      </div>
+      @endforeach
+    </div>
+  </div>
+  <div class="form-group d-flex flex-wrap">
+    <div class="mr-4">
+      <label for="open">Hora de apertura:</label>
+      <input type="time" name="open">
+    </div>
+    <div>
+      <label for="close">Cierra a las:</label>
+      <input type="time" name="close">
+    </div>
   </div>
   <input type="submit" class="btn btn-primary" value="Crear">
 </form>

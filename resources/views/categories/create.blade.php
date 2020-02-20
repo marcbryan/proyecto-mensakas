@@ -2,7 +2,7 @@
 @section('title', ' - Crear Categoría')
 @section('styles')
 .row i{font-size:5vw; margin-bottom:3px}
-.container{max-width:inherit;}
+.container{max-width:inherit;padding:0;}
 form{padding: 0 15px;}
 div.alert-danger > ul{margin-bottom: 0;}
 @endsection

@@ -9,6 +9,16 @@ use App\Consumer;
 class ConsumerController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -43,7 +53,7 @@ class ConsumerController extends Controller
             'last_name' => 'required|max:50',
             'email' => 'required|email|unique:App\Consumer,email',
             'address' => 'required|max:255',
-            'zipcode' => 'required|integer|digits:5',
+            'zipcode' => 'required|digits:5',
             'phone' => 'required|integer|digits:9'
         ]);
         if ($validator->fails()) {
@@ -94,7 +104,7 @@ class ConsumerController extends Controller
             'last_name' => 'required|max:50',
             'email' => 'required|email|unique:App\Consumer,email',
             'address' => 'required|max:255',
-            'zipcode' => 'required|integer|digits:5',
+            'zipcode' => 'required|digits:5',
             'phone' => 'required|integer|digits:9'
         ]);
         if ($validator->fails()) {

@@ -5,9 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Business;
+use App\Business_TimeTable;
 
 class BusinessController extends Controller
 {
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +40,8 @@ class BusinessController extends Controller
     public function create()
     {
         $columns = Business::getTableColumns();
-        return view('businesses.create', ['columns'=>$columns]);
+        $days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+        return view('businesses.create', ['columns'=>$columns, 'days'=>$days]);
     }
 
     /**
@@ -43,10 +56,23 @@ class BusinessController extends Controller
             'name' => 'required|max:40',
             'address' => 'required|max:200',
             'phone' => 'required|integer|digits:9',
-            'email' => 'required|email',
-            'zipcode' => 'required|integer|digits:5',
+            'email' => 'required|email|unique:App\Business,email',
+            'zipcode' => 'required|digits:5',
+            'open' => 'required',
+            'close' => 'required|after:open'
         ]);
-        if ($validator->fails()) {
+        $days = array();
+        $except = ['open', 'close'];
+        for ($i=1; $i <= 7; $i++) {
+          if ($request->has('weekday-'.$i)) {
+            array_push($days, $i);
+            array_push($except, 'weekday-'.$i);
+          }
+        }
+        if ($validator->fails() || count($days) == 0) {
+          if (count($days) == 0) {
+            $validator->errors()->add('weekday', 'No has seleccionado ningún día de la semana.');
+          }
           return back()
                       ->withErrors($validator)
                       ->withInput();
@@ -55,7 +81,10 @@ class BusinessController extends Controller
           'created_at' => now(),
           'updated_at' => now(),
         ]);
-        Business::create($request->all());
+        $business = Business::create($request->except($except));
+        foreach ($days as $day) {
+          Business_TimeTable::create(['business_id'=>$business->id, 'day'=>$day, 'open'=>$request->open, 'close'=>$request->close]);
+        }
 
         return redirect()->route('businesses.index')
                         ->withSuccess('Negocio creado correctamente.');
@@ -95,7 +124,7 @@ class BusinessController extends Controller
             'address' => 'required|max:200',
             'phone' => 'required|integer|digits:9',
             'email' => 'required|email|unique:App\Business,email',
-            'zipcode' => 'required|integer|digits:5',
+            'zipcode' => 'required|digits:5',
         ]);
         if ($validator->fails()) {
           return back()

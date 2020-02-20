@@ -4,12 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 use App\Category;
 use App\Category_Name;
 use App\Business;
 
 class CategoryController extends Controller
 {
+    private $lang = 'ES';
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +32,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         $columns = Category::getTableColumns();;
-        array_splice($columns, 1, 0, 'Nombre de la categoría');
-        return view('categories.index', ['categories'=>$categories, 'columns'=>$columns, 'lang'=>'ES']);
+        return view('categories.index', ['categories'=>$categories, 'columns'=>$columns, 'keys'=>Category::getFilterKeys(), 'lang'=>$this->lang]);
     }
 
     /**
@@ -58,7 +70,7 @@ class CategoryController extends Controller
         Category_Name::create([
             'name'=> $request->name,
             'category_id' => $category->id,
-            'lang' => 'ES',
+            'lang' => $this->lang,
         ]);
 
         return redirect()->route('categories.index')
@@ -86,7 +98,7 @@ class CategoryController extends Controller
     {
         $columns = Category::getTableColumns();
         $category = Category::findOrFail($id);
-        $category_name = $category->names()->where('lang', 'ES')->value('name');
+        $category_name = $category->names()->where('lang', $this->lang)->value('name');
         return view('categories.edit', ['category' => $category, 'columns' => $columns, 'category_name' => $category_name]);
     }
 
@@ -116,7 +128,7 @@ class CategoryController extends Controller
         }
         $category = Category::findOrFail($id);
         $category->update($request->except(['category_name']));
-        $category->names()->where('lang', 'ES')->update(['name' => $request->category_name]);
+        $category->names()->where('lang', $this->lang)->update(['name' => $request->category_name]);
 
         return back()->withSuccess('Categoría actualizada correctamente!');
     }
@@ -133,5 +145,25 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->route('categories.index')
                         ->withSuccess('Categoría eliminada correctamente!');
+    }
+
+    public function filter(Request $request) {
+        $validator = Validator::make($request->all(),[
+            'column' => 'required',
+            'value' => 'required',
+        ]);
+        if ($validator->fails()) {
+          return back()
+                      ->withErrors($validator)
+                      ->withInput();
+        }
+        $names = Category_Name::where('lang', $this->lang)->where('name', 'LIKE', '%'.$request->value.'%')->get();
+        $categories = new Collection();
+        foreach ($names as $name) {
+          $found = Category::where('id', $name->category_id)->get();
+          $categories = $categories->merge($found);
+        }
+        $columns = Category::getTableColumns();
+        return view('categories.index', ['categories'=>$categories, 'columns'=>$columns, 'keys'=>Category::getFilterKeys(), 'lang'=>$this->lang]);
     }
 }

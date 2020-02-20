@@ -33,6 +33,7 @@ Route::resource('consumers', 'ConsumerController');
 Route::get('/businesses/filter', 'BusinessController@filter');
 Route::resource('businesses', 'BusinessController');
 
+Route::get('/orders/filter', 'OrderController@filter');
 Route::resource('orders', 'OrderController');
 
 Route::get('/menus/filter', 'MenuController@filter');
@@ -41,4 +42,5 @@ Route::resource('menus', 'MenuController');
 Route::get('/items/filter', 'ItemController@filter');
 Route::resource('items', 'ItemController');
 
+Route::get('/categories/filter', 'CategoryController@filter');
 Route::resource('categories', 'CategoryController');

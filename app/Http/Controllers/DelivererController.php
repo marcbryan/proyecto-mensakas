@@ -9,6 +9,16 @@ use App\Deliverer;
 class DelivererController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -38,7 +48,7 @@ class DelivererController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[[
+        $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:25',
             'last_name' => 'required|max:50',
             'email' => 'required|email|unique:App\Deliverer,email',

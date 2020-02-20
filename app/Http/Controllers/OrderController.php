@@ -4,12 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 use App\Order;
 use App\Deliverer;
+use App\Business;
 
-// TODO: Mostrar errores
 class OrderController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -90,7 +101,6 @@ class OrderController extends Controller
      */
     public function destroy($id) {}
 
-    // TODO: Filtro orders
     public function filter(Request $request) {
       $validator = Validator::make($request->all(),[
           'column' => 'required',
@@ -102,9 +112,14 @@ class OrderController extends Controller
                     ->withInput();
       }
       if ($request->column == 'business_name') {
-        //$orders =
+        $businesses = Business::where('name', 'LIKE', '%'.$request->value.'%')->get();
+        $orders = new Collection();
+        foreach ($businesses as $business) {
+          $found = Order::where('business_id', $business->id)->get();
+          $orders = $orders->merge($found);
+        }
       } else {
-        //$orders = Order::where($request->column, 'LIKE', '%'.$request->value.'%')->get();
+        $orders = Order::where($request->column, $request->value)->get();
       }
       $columns = Order::getTableColumns();
       return view('orders.index', ['orders'=>$orders, 'columns'=>$columns, 'keys'=>Order::getFilterKeys()]);
