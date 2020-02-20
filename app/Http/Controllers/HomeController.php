@@ -25,4 +25,10 @@ class HomeController extends Controller
     {
         return view('PanelDeControl');
     }
+
+    public function PanelUsers()
+    {
+        return view('PanelUsers');
+    }
+
 }

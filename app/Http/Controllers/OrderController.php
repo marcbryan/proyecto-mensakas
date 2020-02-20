@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use App\Order;
 use App\Deliverer;
 use App\Business;
+use App\Consumer;
 
 class OrderController extends Controller
 {
@@ -20,7 +21,7 @@ class OrderController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -93,6 +94,25 @@ class OrderController extends Controller
         return back()->withSuccess('Pedido actualizado correctamente!');
     }
 
+    /*public function storeAndSaveConsumerID(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'zipcode' => 'required',
+            'phone' => 'required'
+        ]);
+        $request->merge([
+          'created_at' => now(),
+          'updated_at' => now(),
+        ]);
+        Consumer::create($request->all());
+
+        return redirect()->route('newOrder.pedido');
+    }
+*/
     /**
      * Remove the specified resource from storage.
      *
