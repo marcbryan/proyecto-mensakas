@@ -23,14 +23,6 @@ Route::get('/PanelDeControl', 'HomeController@index')->name('PanelDeControl');
 Route::get('/PanelUsers', 'HomeController@PanelUsers');
 
 
-Route::get('/newConsumer', function () {
-    return view('newOrder.newConsumer');
-});
-Route::get('/restaurante', function () {
-   return view('newOrder.restaurante');
-})->name("restaurante");
-
-
 Route::get('/superusers/filter', 'SuperuserController@filter');
 Route::resource('superusers', 'SuperuserController');
 
@@ -54,6 +46,10 @@ Route::resource('items', 'ItemController');
 
 Route::get('/categories/filter', 'CategoryController@filter');
 Route::resource('categories', 'CategoryController');
-Route::get('/storeSaveConsumer','ConsumerController@storeAndSaveConsumerID');
 
 
+Route::get('/newConsumer','NewOrderController@newConsumer')->name('newConsumer');
+Route::put('/saveConsumer','NewOrderController@saveConsumer');
+Route::get('/restaurantes','NewOrderController@restaurantes')->name('restaurantes');
+Route::put('/restSelected', 'NewOrderController@restSelected')->name('restSelected');
+Route::get('/carrito', 'NewOrderController@carrito')->name('carrito');

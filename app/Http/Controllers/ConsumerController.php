@@ -72,34 +72,6 @@ class ConsumerController extends Controller
                         ->withSuccess('Cliente creado correctamente.');
     }
 
-       public function storeAndSaveConsumerID(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'address' => 'required',
-            'zipcode' => 'required',
-            'phone' => 'required'
-        ]);
-        $request->merge([
-          'created_at' => now(),
-          'updated_at' => now(),
-        ]);
-
-        $consumer=Consumer::create($request->all());
-        session_start();
-        $_SESSION['newConsumer']=$consumer->id;
-
-        $PosiblesBusiness=Business::where('zipcode',$consumer->zipcode)->get();
-
-        //dd($PosibleBusiness);
-        
-        
-
-        // TODO: Cambiar texto hardcodeado
-        return redirect()->route('restaurante',['business'=>$PosiblesBusiness]);
-    }
     /**
      * Display the specified resource.
      *
