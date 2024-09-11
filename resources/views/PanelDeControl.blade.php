@@ -14,7 +14,7 @@
         </a>
     </div>
     <div class="col-sm-3 col-12 mb-2 ">
-        <a class="btn btn-primary btn-block" href="{{route('businesses.index')}}" role="button"><i class="fas fa-building"></i><br>Bussiness</a>
+        <a class="btn btn-primary btn-block" href="{{route('businesses.index')}}" role="button"><i class="fas fa-building"></i><br>Business</a>
     </div>
     <div class="col-sm-3 col-12 mb-2">
         <a class="btn btn-primary btn-block" href="{{route('menus.index')}}" role="button">
